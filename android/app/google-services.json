@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "319939796217",
+    "firebase_url": "https://socom-tronics-default-rtdb.firebaseio.com/",
+    "project_id": "socom-tronics",
+    "storage_bucket": "socom-tronics.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:319939796217:android:bf80f6d814302f5c041628",
+        "android_client_info": {
+          "package_name": "com.socom.multi.socomtronics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "319939796217-90snf0nh9ii2n1u5nmhlsc5ee63kh3jh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.socom.multi.socomtronics",
+            "certificate_hash": "1bbd44b4c350856cb16a129db7681bbc8cc46a87"
+          }
+        },
+        {
+          "client_id": "319939796217-v77mb37lnqpvpt55ucnct43pqq8n6ar1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3HSCOmtc2CeNa5gE5ykYG1TwcWzgchg0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "319939796217-v77mb37lnqpvpt55ucnct43pqq8n6ar1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

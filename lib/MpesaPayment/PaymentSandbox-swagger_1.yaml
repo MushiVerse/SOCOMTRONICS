@@ -1,0 +1,1784 @@
+openapi: 3.0.1
+info:
+  title: Payments
+  description: 'This Swagger document describes the Payments API, which facilitates a variety of payment methods (including card, eft and carrier billing) for various opcos (including South Africa, Tanzania, Lesotho and others). This
+    document will be updated as new opcos and payment methods are added.
+    <p>Current Scope : Carrier Billing (Lesotho and Tanzania), EFT (South
+    Africa), Card (South Africa), International Cards, M-Pesa (Tanzania) </p>'
+  termsOfService: 'http://swagger.io/terms/'
+  contact:
+    email: apipulse@vodacom.co.za
+  license:
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+  version: '1.2.0'
+servers:
+  - url: 'https://apix.vodacom.co.za/v1/paymentsandbox'
+    description: PROD Server Url
+tags:
+  - name: Payment Management
+    
+security:
+  - OAuth2: []
+  
+paths:
+  '/{countryCode}/carrierbilling':
+    post:
+      tags:
+        - Payment Management
+      summary: Carrier Billing Payment Method
+      description: >-
+        This operation facilitates the processing of Carrier Billing payment
+        transaction
+      operationId: Carrier Billing
+      parameters:
+        - name: countryCode
+          in: path
+          description: >-
+            Request Originator Opco. The ISO 3166-1 alpha-2 code for the user's
+            country.
+          required: true
+          schema:
+            type: string
+            enum:
+              - ls
+              - tz
+        - name: Content-Type
+          in: header
+          description: >-
+            Describes the type of content in the request body. This value must
+            always be set to application/json
+          required: true
+          schema:
+            type: string
+            enum:
+              - application/json
+      requestBody:
+        description: Payment Management - Carrier Billing Request Parameters
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentManagementRequest_CarrierBilling'
+        required: true
+      responses:
+        '200':
+          description: Carrier Billing Charge Completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CarrierBillingResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpikeError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInternalServer'
+  '/{countryCode}/eft/initiate':
+    post:
+      tags:
+        - Payment Management
+      summary: EFT Payment Method
+      description: This operation facilitates the processing of an EFT payment transaction
+      operationId: EFT
+      parameters:
+        - name: countryCode
+          in: path
+          description: >-
+            Request Originator country code. The ISO 3166-1 alpha-2 code for the user's
+            country.
+          required: true
+          schema:
+            type: string
+            enum:
+              - za
+        - name: Content-Type
+          in: header
+          description: >-
+            Describes the type of content in the request body. This value must
+            always be set to application/json
+          required: true
+          schema:
+            type: string
+            enum:
+              - application/json
+      requestBody:
+        description: Payment Management Request Object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentManagementRequest_EFT'
+        required: true
+      responses:
+        '200':
+          description: >-
+            EFT Payment Request Initiation Url created using the Payment Object
+            Parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EFTPaymentObjectResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpikeError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInternalServer'
+      callbacks:
+        EFTPaymentStatusNotificationCallBack:
+          '{$request.body#/merchantNotifyURL}':
+            post:
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: >-
+                        #/components/schemas/EFTPaymentStatusNotificationCallBack
+              responses:
+                '200':
+                  description: EFT Payment Transaction Status Notification Recieved
+        EFTTokenNotificationCallBack:
+          '{$request.body#/tokenNotificationUrl}':
+            post:
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/EFTTokenNotificationCallBack'
+              responses:
+                '200':
+                  description: EFT Token Notification Recieved
+        EFTDeleteTokenNotificationCallBack:
+          '{$request.body#/tokenDeletedNotificationUrl}':
+            post:
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/EFTDeleteTokenNotificationCallBack'
+              responses:
+                '200':
+                  description: EFT Token Notification Recieved
+  '/{countryCode}/card/initiate':
+    post:
+      tags:
+        - Payment Management
+      summary: Card Payment Method
+      description: This operation facilitates the processing of a Card payment transaction for all countries in scope
+      operationId: Card
+      parameters:
+        - name: countryCode
+          in: path
+          description: >-
+            Request Originator country code. The ISO 3166-1 alpha-2 code for the user's
+            country.
+          required: true
+          schema:
+            type: string
+            enum:
+            - za
+            - tz
+            - ls
+            - ke
+            - mz
+            - gh
+            - cd
+            - et
+            - ng
+            - bw
+            - na
+            - zw
+            - sz
+            - er
+            - gm
+            - lr
+            - mw
+            - mu
+            - ug
+            - zm
+            - ss
+        - name: Content-Type
+          in: header
+          description: >-
+            Describes the type of content in the request body. This value must
+            always be set to application/json
+          required: true
+          schema:
+            type: string
+            enum:
+              - application/json
+      requestBody:
+        description: Payment Management Request Object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentManagementRequest_Card'
+        required: true
+      responses:
+        '200':
+          description: Card Payment Object Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CardResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpikeError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInternalServer'
+      callbacks:
+        CardTransactionStatusCallBack:
+          '{$request.body#/merchantNotifyURL} - This Callback is applicable for 1. Once-off transactions for all country in scope 2. Tokenized transactions for all country in scope 3. Recurring Transaction for SA. For International Recurring, It is a Synchronous response back to merchant':
+            post:
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: >-
+                        #/components/schemas/CardPaymentStatusNotificationCallBack
+              responses:
+                '200':
+                  description: Card Payment Transaction Status Notification Recieved
+        CardTokenNotificationCallBack:
+          '{$request.body#/merchantTokenNotifyURL} - This Callback is applicable for Tokenized transactions for all country in scope':
+            post:
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: >-
+                        #/components/schemas/CardPaymentTokenNotificationCallBack
+              responses:
+                '200':
+                  description: Card Payment Transaction Status Notification Recieved
+  '/{countryCode}/mpesa':
+    post:
+      tags:
+        - Payment Management
+      summary: M-Pesa Payment Method
+      description: This operation facilitates the processing of M-Pesa transaction
+      operationId: Mpesa
+      parameters:
+        - name: countryCode
+          in: path
+          description: >-
+            Request Originator country code. The ISO 3166-1 alpha-2 code for the user's
+            country.
+          required: true
+          schema:
+            type: string
+            enum:
+              - tz
+              - ls
+        - name: Content-Type
+          in: header
+          description: >-
+            Describes the type of content in the request body. This value must
+            always be set to application/json
+          required: true
+          schema:
+            type: string
+            enum:
+              - application/json
+      requestBody:
+        description: Payment Management - M-Pesa Request Parameters
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MpesaRequest'
+        required: true
+      callbacks:
+        mpesaCallback:
+          '{$request.body#/merchantNotifyUrl}':
+            post:
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: >-
+                        #/components/schemas/MpesaPaymentStatusNotificationCallback
+              responses:
+                '200':
+                  description: M-Pesa Transaction Status Notification Recieved
+      responses:
+        '200':
+          description: M-Pesa sends Push SMS to Subscriber
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mpesa_sync_response'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorBadRequest'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorUnauthorized'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+        '429':
+          description: Too Many Requests
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SpikeError'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorInternalServer'
+components:
+  schemas:
+    MpesaRequest:
+      required:
+        - sourceTransactionId
+        - customerIdentifier
+        - merchantName
+        - merchantAccountNumber
+        - merchantIdentifier
+        - currencyCode
+        - SourceTimestamp
+        - totalOrderAmount
+        - merchantNotifyURL
+        - merchantTransactionReference
+        - sourceTimestamp
+      type: object
+      properties:
+        sourceTransactionId:
+          type: string
+          description: Source Initiated Transaction ID uniquely identified for that
+            transaction (UUID) UUID should be string with 36 characters (32 hex
+            digits + 4 dashes)
+          example: 5e2a8437-9057-49f2-bbc9-1fc1104288e5
+          minLength: 36
+          maxLength: 36
+        merchantTransactionReference:
+          type: string
+          description: The TransactionReference is a unique Identifier for the Payment Request . This is required by M-Pesa gateway. It should be a string with 20 characters
+          example: 12sdxq3634dadsas242
+          minLength: 20
+          maxLength: 20
+        merchantIdentifier:
+          type: string
+          description: Unique Identifier for each merchant at ApiGateway system.
+          example: 'API_PRNT_AVS'
+        sourceTimestamp:
+          type: string
+          description: 'The timestamp of the transaction initiation from the source system'
+          format: yyyy-MM-dd'T'HH:mm:ss.SSS
+          example: '2016-03-25T12:00:00.000'
+        customerIdentifier:
+          type: string
+          description: Customer Identifier - This could will be  MSISDN or other identify as defined in the respective partner's platform.
+          example: '255754710119'
+          maxLength: 100
+        productIdentifier:
+          type: string
+          description: Description of the product item/(s) being paid for.
+          example: Video Play Services
+          maxLength: 100
+        merchantName:
+          type: string
+          description: The name of the business registered on M-Pesa.
+          example: CELLULANT LIPA BILL
+          maxLength: 20
+        merchantAccountNumber:
+          type: string
+          description: The business account number in M-Pesa.
+          example: 258888
+          maxLength: 6
+        language:
+          type: string
+          description: Language of the subscriber. This can be used to display the invoice or the USSD push in the specified language. This is depenedent on the payment provider server capability
+          example: 'en'
+          enum: [en]
+        currencyCode:
+          type: string
+          description: ISO 3 currency code for that particular coutry/opco
+          example: TZS
+          enum:
+            - CDF
+            - LSL
+            - MZM
+            - TZS
+            - ZAR
+        totalOrderAmount:
+          type: number
+          description: Total transaction amount. This can be decimal upto 2 precision.
+          example: 200.00
+        merchantNotifyURL:
+          type: string
+          description: 'The endpoint which the result call back will be sent to'
+          example: 'http://10.154.10.46:3200/URL/TransactionListener2'
+    Mpesa_sync_response:
+      required:
+        - sourceTransactionId
+        - payGwTransactionId
+        - apiGatewayTransactionId
+        - transactionReference
+        - customerIdentifier
+        - merchantName
+        - merchantAccountNumber
+        - merchantId
+        - currencyCode
+        - totalOrderAmount
+        - status
+        - responseCode
+        - sourceTimestamp
+      type: object
+      properties:
+        sourceTransactionId:
+          type: string
+          description: Correlating back the Source Initiated Transaction ID 
+          example: 5e2a8437-9057-49f2-bbc9-1fc1104288e5
+          minLength: 36
+          maxLength: 36
+        apiGatewayTransactionId:
+          type: string
+          description: ApiGateway transaction ID generated for the transaction
+          example: xxxxxxxzatcrh.vodacom.corp-61992-3692433-1
+        payGwTransactionId:
+          type: string
+          description: 'The unique transaction ID generated from the Payment Gateway'
+          example: "8d5f80a6fbb84c49ba434cbdf64f48ee"
+        transactionReference:
+          type: string
+          description: The TransactionReference is the unique Identifier for the Payment that was sent as part of the request
+          example: 12sdxq3634dadsas242
+          minLength: 20
+          maxLength: 20
+        customerIdentifier:
+          type: string
+          description: Customer Identifier - This could will be  MSISDN or other identify as defined in the respective partner's platform.
+          example: '255754710119'
+          maxLength: 100
+        productIdentifier:
+          type: string
+          description: Description of the product item/(s) being paid for.
+          example: Video Play Services
+          maxLength: 100
+        currencyCode:
+          type: string
+          description: ISO 3 currency code for that particular coutry/opco
+          example: TZS
+          enum:
+            - CDF
+            - LSL
+            - MZM
+            - TZS
+            - ZAR
+        totalOrderAmount:
+          type: number
+          description: Total transaction amount. This can be decimal upto 2 decimal digits.
+          example: 200.00
+        status:
+         type: string
+         description: 'The status of the Transaction'
+         example: 'Processed'
+        statusCode:
+         type: string
+         description: 'The Response code of the transaction <ul><li>-1: Transaction wont be processed.System Maintanance/Busy Try again later</li> <li>0: Received Successfully and will be processed</li><li>Duplicate: Transaction has been sent within 10 minutes with matching values of customerIdentifier and merchantAccountNumber</li>
+          </ul>'
+         enum: ["0", "-1","Duplicate"]
+         example: "O"
+        sourceTimestamp:
+          type: string
+          description: The timestamp of the source transaction initiation that was sent as part of the request
+          format: >-
+            yyyy-MM-dd'T'HH:mm:ss.SSSZ 
+          example: '2016-03-25T12:00:00.000'
+    MpesaPaymentStatusNotificationCallback:
+      type: object
+      required:
+        - sourceTransactionId
+        - apiGatewayTransactionId
+        - status
+        - merchantAccountNumber
+        - currencyCode
+        - totalOrderAmount
+        - sourceTimestamp
+        - merchantTransactionReference
+      properties:
+        sourceTransactionId:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+          description: Correlating back the Source Initiated Transaction ID
+          example: 5e2a8437-9057-49f2-bbc9-1fc1104288e5
+        apiGatewayTransactionId:
+          type: string
+          description: Api Gateway transaction ID generated for the transaction
+          example: dapg101zatcrh.vodacom.corp-21321-211848-1.
+        payGwTransactionId:
+          type: string
+          maxLength: 50
+          description: 'The unique transaction ID generated from the Payment Gateway'
+          example: "8d5f80a6fbb84c49ba434cbdf64f48ee"
+        merchantTransactionReference:
+          type: string
+          description: The TransactionReference is the unique Identifier for the Payment that was sent as part of the request
+          example: 12sdxq3634dadsas242
+          minLength: 20
+          maxLength: 20
+        sourceTimestamp:
+          type: string
+          description: The timestamp of the transaction initiation from the source system. Format - yyyy-MM-dd'T'HH:mm:ss.SSS
+          example: '2016-03-25T12:00:00.000'
+        customerIdentifier:
+          type: string
+          description: Customer Identifier - This could will be  MSISDN or other identify as defined in the respective partner's platform.
+          example: '255754710119'
+          maxLength: 100
+        productIdentifier:
+          type: string
+          description: Description of the product item/(s) being paid for.
+          example: Video Play Services
+          maxLength: 100
+        merchantAccountNumber:
+          type: string
+          description: The business account number in M-Pesa.
+          example: 258888
+          maxLength: 6 
+        currencyCode:
+          type: string
+          description: ISO 3 currency code for that particular coutry/opco
+          example: TZS
+          enum:
+            - CDF
+            - LSL
+            - MZM
+            - TZS
+            - ZAR
+        totalOrderAmount:
+          type: number
+          description: Total transaction amount. This can be decimal upto 2 precision.
+          example: 200.00
+        statusMessage:
+          type: string
+          description: 'The description of the transaction status'
+          example: "Processed successfully"
+        status:
+          type: string
+          description: 'The status of the transaction'
+          example: "Completed / USSDCallbackCancel"
+        statusCode:
+          type: string
+          description: The status code , if recieved from the payment gateway
+          example: "00"
+    PaymentManagementRequest_CarrierBilling:
+      required:
+        - sourceTransactionId
+        - customerIdentifier
+        - productIdentifier
+        - totalOrderAmount
+        - currencyCode
+      type: object
+      properties:
+        sourceTransactionId:
+          type: string
+          description: Source Initiated Transaction ID uniquely identified for that
+            transaction (UUID) UUID should be string with 36 characters (32 hex
+            digits + 4 dashes)
+          example: 5e2a8437-9057-49f2-bbc9-1fc1104288e5
+          minLength: 36
+          maxLength: 36
+        customerIdentifier:
+          type: string
+          description: Customer Identifier - This could be an email address, name, MSISDN or other identify as defined in the respective partner's platform.
+          example: abc@xyz.com
+          maxLength: 100
+        productIdentifier:
+          type: string
+          description: Description of the product item/(s) being paid for.
+          example: Video Play Services
+          maxLength: 100
+        totalOrderAmount:
+          type: number
+          description: Total transaction amount. This can be decimal upto 2 precision.
+          example: '15.99'
+        currencyCode:
+          type: string
+          description: ISO 3 currency code for that particular coutry/opco
+          example: TZS
+          enum:
+            - LSL
+            - TZS
+        carrierBillingParameters:
+          $ref: '#/components/schemas/CarrierBillingParameters'
+    CarrierBillingParameters:
+      required:
+        - serviceId
+      type: object
+      description: >-
+        Specific Carrier Billing Parameters . <p> Tanzania : This Block not
+        required. </p> <p> Lesotho : This Block required with serviceId and
+        contentName as Mandatory parameters </p>
+      properties:
+        serviceId:
+          type: string
+          description: Content provider specific identification of the service that the
+            subscriber is registered for or purchasing. A product/package can
+            have many serviceIDs linked to it. <p> Lesotho - Mandatory </p> <p>
+            Tanzania - Not Required </p>
+          example: vc-accenture-avs-svod-01
+        ratingAttributes:
+          required:
+            - contentName
+          type: object
+          properties:
+            assetId:
+              type: string
+              description: An identifier for the device linked to the account requesting
+                the transaction. <p> Lesotho - Optional </p> <p> Tanzania - Not
+                Required </p>
+              example: '1234'
+            contentName:
+              type: string
+              description: Identifies and distinguishes the content being
+                purchased/consumed <p> Lesotho - Mandatory </p> <p> Tanzania -
+                Not Required </p>
+              example: Nollywood 30 Days
+            rate:
+              type: number
+              description: The rate of the package purchase. <p> Lesotho - Optional </p>
+                <p> Tanzania - Not Required </p>
+              example: 0.2
+            preRatePriceIsGross:
+              type: boolean
+              description: If "true", the preRate(described above) includes VAT, if "false" then the preRate excludes VAT <p> Lesotho - optional </p> <p>
+                Tanzania - Not Required </p>
+              example: 'true'
+            extTransId:
+              type: string
+              description: An identifier given by the partner/business entity for whom the transaction is being facilitated, it is used to distinguish the
+                particular transaction in record/s. <p> Lesotho - Optional </p>
+                <p> Tanzania - Not Required </p>
+              example: null
+            invoiceText:
+              type: string
+              description: Text which will accompany the transaction line item on the
+                subscribers monthly bill/invoice. <p> Lesotho - Optional </p>
+                <p> Tanzania - Not Required </p>
+    CarrierBillingResponse:
+      required:
+        - sourceTransactionId
+        - apiGatewayTransactionId
+        - customerIdentifier
+        - productIdentifier
+        - totalOrderAmount
+        - transactionStatus
+      type: object
+      properties:
+        sourceTransactionId:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+          description: Correlating back the Source Initiated Transaction ID
+          example: 123e4567-e89b-42d3-a456-556642440000
+        apiGatewayTransactionId:
+          type: string
+          description: Api Gateway transaction ID for this transaction.
+          example: dapg101zatcrh.vodacom.corp-21321-211848-1
+        customerIdentifier:
+          type: string
+          description: Customer Identifier - The customers’ name or some form of identifier like email address or MSISDN for example.
+          example: '27828640000'
+        productIdentifier:
+          type: string
+          description: Description of the product item/(s) being paid for.
+          example: The Vodacom Movie
+        totalOrderAmount:
+          type: number
+          description: Amount to be paid (net of taxes).
+          example: '15.99'
+        transactionStatus:
+          type: string
+          description: Status of the payment
+          example: Success
+    PaymentManagementRequest_EFT:
+      required:
+        - sourceTransactionId
+        - merchantIdentifier
+        - customerIdentifier
+        - productIdentifier
+        - totalOrderAmount
+        - currencyCode
+        - eftParameters
+      type: object
+      properties:
+        sourceTransactionId:
+          type: string
+          description: Source Initiated Transaction ID uniquely identified for that
+            transaction (UUID).UUID should be string with 36 characters (32 hex
+            digits + 4 dashes). This will be the transaction reference for the
+            payment initiation and correlated in response and status call backs.
+          format: uuid
+          example: 5e2a8437-9057-49f2-bbc9-1fc1104288e5
+        merchantIdentifier:
+          type: string
+          description: This is a unique reference to identify each caller merchant.
+          example: AP_PRT_AVS
+        customParameters:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              value:
+                type: string
+          description: This field is an array of name-value pairs that can be used to send data in fields that are not catered for in the request object.
+        customerIdentifier:
+          type: string
+          description: Customer Identifier - This could be an email address, name, MSISDN or other identify as defined in the respective partner's platform
+          example: abc@xyz.com
+          maxLength: 100
+        productIdentifier:
+          type: string
+          description: Description of the product item/(s) being paid for.
+          example: Video Play Services
+          maxLength: 100
+        totalOrderAmount:
+          type: integer
+          format: double
+          description: Total transaction amount. This can be decimal upto 2 precision.
+          example: '15.99'
+        currencyCode:
+          type: string
+          description: ISO 3 currency code for that particular coutry/opco
+          example: ZAR
+          enum:
+            - ZAR
+        eftParameters:
+          $ref: '#/components/schemas/EFTParameters'
+    EFTParameters:
+      required:
+        - merchantNotifyURL
+        - registerTokenProfile
+        - merchantSuccessWebRedirectUrl
+        - merchantErrorWebRedirectUrl
+        - merchantCancelWebRedirectUrl
+      type: object
+      properties:
+        merchantNotifyURL:
+          type: string
+          description: The URL that we should post the payment notification to, the result should be posted back regardless of the outcome of the transaction.
+            If a value is set in the merchant admin and sent in the post, the
+            notification result will be sent to the posted value.
+          maxLength: 150
+          example: 'https://www.mycoolwebsite.com/videos'
+        merchantCancelWebRedirectUrl:
+          type: string
+          description: To improve user experience, the payment gateway can route the user back to the partners preferred page in case of a cancel payment.
+          maxLength: 150
+        merchantErrorWebRedirectUrl:
+          type: string
+          description: To improve user experience, the payment gateway can route the user back to the partners preferred page in case of an error.
+          maxLength: 150
+        merchantSuccessWebRedirectUrl:
+          type: string
+          description: To improve user experience, the payment gateway can route the user back to the partners preferred page in the event of a successful
+            request.
+          maxLength: 150
+          example: www.redirectmehere.co.za
+        registerTokenProfile:
+          type: boolean
+          description: Giving the option to end user to store the Card details and enable tokenization. If you would like your user to have an opportunity to
+            register for tokenisation, pass this through as true.
+          example: true
+        customerBankEFTTokenProfileID:
+          type: string
+          format: uuid
+          description: The token profile ID required for future payments for this user. The token profileID is used for retrieving a token related to the
+            transacting customer at the transacting merchant. Customers will
+            have a unique token per merchant that they are transacting with.
+            <p>Mandatory for Requests after successful token registration.</p>
+          example: 5e2a8437-9057-49f2-bbc9-1fc1104288e5
+        customerBankEFTToken:
+          type: string
+          description: The token recieved as part of Token Notification call back from the Payment Gateway for a tokenised transaction. Customers will have a
+            unique token per merchant that they are transacting with. The token
+            needs to be populated in future transaction after Tokenization.
+            <p>Mandatory for Requests after successful token registration.</p>
+          example: 5e2a8437-9057-49f2-bbc9-1fc1104288e5-ttebsndjwml-456628282
+        tokenNotificationUrl:
+          type: string
+          description: The URL you would like Apigateway to send the token response to
+            after successful payment and token registration. This is different
+            to the payment notification result. <p>Mandatory for requests with
+            RegisterTokenProfile as true</p>
+          example: 'http://mycoolwebsite.com/whereIKeepTransactionLogs'
+        tokenDeletedNotificationURL:
+          type: string
+          description: The URL you would like Apigateway to notify if we deactivate the
+            token and it can no longer be used. <p>Mandatory for requests with
+            RegisterTokenProfile as true</p>
+          example: 'http://mycoolwebsite.com/whereIKeepTransactionLogs'
+    EFTPaymentObjectResponse:
+      required:
+        - sourceTransactionId
+        - apiGatewayTransactionId
+        - payGwTransactionId
+        - payGwRedirectUrl
+        - status
+      type: object
+      properties:
+        sourceTransactionId:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+          description: Correlating back the same source transaction ID 
+          example: 123e4567-e89b-42d3-a456-556642440000
+        apiGatewayTransactionId:
+          type: string
+          description: Api Gateway transaction ID for this transaction.
+          example: dapg101zatcrh.vodacom.corp-21321-211848-1
+        payGwTransactionId:
+          type: string
+          description: Unique Id generated by Payment Gateway
+          example: 4322a215-3b6d-4387-a055-52f4941d2a6c
+        status:
+          type: string
+          description: Payment Gateway Dynamic Url creation status message
+          example: success
+        statusDescription:
+          type: string
+          description: Payment Gateway Dynamic Url creation status desciprion. It is optional, only sent if receved from payment gateway
+        payGwRedirectUrl:
+          type: string
+          description:  Payment Gateway Redirect Url . Merchant on recieveing the response back need to perform a web redirect to this payment gateway url.
+            This url is dynamic and uniquely generated for each transaction.
+          example: 'https://pay.ozow.com/5e2a8437-9057-49f2-bbc9-1fc1104288e5/secure'
+    EFTPaymentStatusNotificationCallBack:
+      type: object
+      required:
+        - sourceTransactionId
+        - apiGatewayTransactionId
+        - paymentGatewayTransactionId
+        - customerIdentifier
+        - totalOrderAmount
+        - currencyCode
+        - status
+        - encryptedHash
+      properties:
+        sourceTransactionId:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+          description: Correlating back the same source transaction ID 
+          example: 123e4567-e89b-42d3-a456-556642440000
+        apiGatewayTransactionId:
+          type: string
+          description: Api Gateway transaction ID for this transaction
+          example: dapg101zatcrh.vodacom.corp-21321-211848-1.
+        paymentGatewayTransactionId:
+          type: string
+          maxLength: 50
+          description: The transaction identifier generated by Payment Gateway
+          example: 123e4567-e89b-42d3-a456-556642440000
+        customerIdentifier:
+          type: string
+          maxLength: 100
+          description: This is a unique identifier for the customer as used by the Merchant to identify the customer on his system. The value passed in the
+            request will be correlated back in the response.
+          example: abc@xyz.com
+        totalOrderAmount:
+          type: integer
+          format: double
+          description: Amount to be paid (net of taxes).
+          example: 15.99
+        currencyCode:
+          type: string
+          description: The ISO 4217 3 letter code for the transaction currency.
+          example: ZAR
+        status:
+          type: string
+          maxLength: 50
+          description: The transaction status from the Payment Gateway
+          example: Complete/Cancelled/Error/Abandoned/PendingInvestigation/Pending
+        statusMessage:
+          type: string
+          maxLength: 150
+          description: Message regarding the status of the transaction. This field will not always have a value. This is a user friendly message that can be
+            displayed to the user
+          example: User cancelled transaction
+        encryptedHash:
+          type: string
+          maxLength: 100
+          description: SHA512 hash used to ensure that certain fields in the message have not been altered after the hash was generated. The encrypted Hash
+            has to be verified once the response is recieved from APiGateway.
+          example: eedcba106cd8fef3ba6cec5ec80de7d7d7fc90343028bf95b908718c671d0fe885ca08b206d788de009d237a93c18e66edf6ede3f5ca7057e23474106465dcc6
+    EFTTokenNotificationCallBack:
+      type: object
+      required:
+        - sourceTransactionId
+        - apiGatewayTransactionId
+        - paymentGatewayTransactionId
+        - customerBankEFTTokenProfileId
+        - customerBankEFTToken
+        - status
+      properties:
+        sourceTransactionId:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+          description: Correlating back the same source transaction ID 
+          example: 123e4567-e89b-42d3-a456-556642440000
+        apiGatewayTransactionId:
+          type: string
+          description: Api Gateway transaction ID for this transaction
+          example: dapg101zatcrh.vodacom.corp-21321-211848-1.
+        paymentGatewayTransactionId:
+          type: string
+          maxLength: 50
+          description: The transaction identifier generated by Payment Gateway
+          example: 123e4567-e89b-42d3-a456-556642440000
+        customerBankEFTTokenProfileID:
+          type: string
+          format: uuid
+          description: The token profile ID required for future payments for this user. The token profileID is used for retrieving a token related to the
+            transacting customer at the transacting merchant. Customers will
+            have a unique token per merchant that they are transacting with.
+          example: 5e2a8437-9057-49f2-bbc9-1fc1104288e5
+        customerBankEFTToken:
+          type: string
+          description: The token recieved as part of Token Notification call back from the Payment Gateway for a tokenised transaction. Customers will have a
+            unique token per merchant that they are transacting with. The token
+            needs to be populated in future transaction after Tokenization
+          example: 5e2a8437-9057-49f2-bbc9-1fc1104288e5-ttebsndjwml-456628282
+        status:
+          type: string
+          maxLength: 50
+          description: Message regarding the status of the tokenization. This field will
+            not always have a value. This is a user friendly message that can be
+            displayed to the user
+          example: success
+        statusMessage:
+          type: string
+          maxLength: 250
+          description: Message regarding the error while tokenization. This field will not always have a value. Only populate if any error.
+          example: Tokenization failed
+    EFTDeleteTokenNotificationCallBack:
+      type: object
+      required:
+        - apiGatewayTransactionId
+        - tokenProfileId
+        - statusMessage
+      properties:
+        apiGatewayTransactionId:
+          type: string
+          description: Api Gateway transaction ID for this
+            transaction
+          example: dapg101zatcrh.vodacom.corp-21321-211848-1.
+        tokenProfileID:
+          type: string
+          format: uuid
+          description: The token profile ID required for future payments for this user. The token profileID is used for retrieving a token related to the
+            transacting customer at the transacting merchant. Customers will
+            have a unique token per merchant that they are transacting with.
+          example: 5e2a8437-9057-49f2-bbc9-1fc1104288e5
+        statusMessage:
+          type: string
+          maxLength: 250
+          description: >-
+            Message mentioning the reason of token deletion. For example - If
+            the user enters the incorrect tokenization PIN 3 consecutive times,
+            the token profile will be deleted and we will send a token deleted
+            notification to the merchant so they can delete the token they have
+            stored for this user.
+          example: User enters the incorrect tokenization PIN 3 consecutive times
+    PaymentManagementRequest_Card:
+      required:
+        - sourceTransactionId
+        - merchantTransactionReference
+        - merchantIdentifier
+        - customerIdentifier
+        - productIdentifier
+        - totalOrderAmount
+        - currencyCode
+        - paymentType
+        - merchantNotifyUrl
+      type: object
+      properties:
+        sourceTransactionId:
+          type: string
+          description: Source Initiated Transaction ID uniquely identified for that
+            transaction (UUID).UUID should be string with 36 characters (32 hex
+            digits + 4 dashes). This will be the transaction reference for the
+            payment initiation and correlated in response and status call backs.
+          format: uuid
+          example: 5e2a8437-9057-49f2-bbc9-1fc1104288e5
+        merchantIdentifier:
+          type: string
+          description: This is a unique reference to identify each caller merchant.
+          example: API_PRNT_AVS
+        merchantTransactionReference:
+          type: string
+          description: The Merchant Reference is a unique Identifier for the Payment Request . This is required by VFS Payment gateway. It should be a string with 20 characters
+          minLength: 20
+          maxLength: 20
+          example: TNlHuw0ItOMAP0EW4raC
+        paymentType:
+          type: string
+          description: This field indicates the type of Card payment transaction initiated from merchant.
+          enum:
+          - ONCEOFF
+          - TOKENZED
+          - RECURRING
+          example: ONCEOFF
+        customParameters:
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              value:
+                type: string
+          description: This field is an array of name-value pairs that can be used to send data in fields that are not catered for in the request object.
+        customerIdentifier:
+          type: string
+          description: Customer Identifier - This could be an email address, name, MSISDN or other identify as defined in the respective partner's platform
+          example: abc@xyz.com
+          maxLength: 100
+        productIdentifier:
+          type: string
+          description: Description of the product item/(s) being paid for. This can be also the description of the overall order placed.
+          example: Video Play Services
+          maxLength: 100
+        totalOrderAmount:
+          type: integer
+          description: Total transaction amount. This can be decimal upto 2 precision. This value should match sum of all subTotal for SA once-off request.
+          example: '15.99'
+        currencyCode:
+          type: string
+          description: ISO 3 currency code for that particular coutry/opco
+          example: TZS
+          enum:
+            - LSL
+            - TZS
+            - ZAR
+        products:
+          type: array
+          description: The Products group is only required for SA Card Payments. This includes Cart level product details.
+          items:
+            required:
+              - productCode
+              - productDescription
+              - price
+              - quantity
+              - vatRate
+              - subTotal
+            type: object
+            properties:
+              productCode:
+                type: string
+                description: Brief description of the product
+                example: 1234
+              productDescription:
+                type: string
+                description: Brief description of the product
+                example: test
+              price:
+                type: number
+                description: Price of the Product
+                example: 100
+              quantity:
+                type: integer
+                description: Quantity of the Product
+                example: 1
+              vatRate:
+                type: number
+                description: VAT Percentage applicable.
+                example: 15
+              subTotal:
+                type: number
+                description: Total Amount Including VAT Percentage
+                example: 115
+        deliveryAmount:
+          type: number
+          description: delivery Amount if applicable. This is only valid for SA once-off payment, if required  
+        merchantNotifyUrl:
+          type: string
+          description: The URL that we should post the payment notification to, the result should be posted back regardless of the outcome of the transaction.
+            The notification result will be sent to the posted value. This field is not applicable for Recurring International transactions.
+          example: www.notfiymehere.co.za
+          maxLength: 256
+        merchantErrorWebRedirectUrl:
+          type: string
+          description: To improve user experience, the payment gateway can route the user back to the partners preferred page in case of an error. This field is applicable only for SA onceoff/Tokenized.
+          example: www.redirectmehere.co.za
+          maxLength: 256
+        merchantCancelWebRedirectUrl:
+          type: string
+          description: To improve user experience, the payment gateway can route the user back to the partners preferred page in case of an error. This field is applicable only for International onceoff/Tokenized.
+          example: www.redirectmehere.co.za
+          maxLength: 256
+        merchantSuccessWebRedirectUrl:
+          type: string
+          description: To improve user experience, the payment gateway can route the user back to the partners preferred page in the event of a successful
+            request. This field is applicable for all onceoff/Tokenized transactions.
+          example: www.redirectmehere.co.za
+          maxLength: 256
+        merchantTokenNotifyUrl:
+          type: string
+          description: The callback url where the token details needs to be sent. This can be same as merchantNotifyUrl. This is mandatory for only Tokenized transactions.
+          example: www.redirectmehere.co.za
+          maxLength: 256
+        customerCardToken:
+          type: string
+          description: Token Issued for the Recurring transaction to the merchant for a respective customer Card Transaction. This field is mandatory only for recurring transactions.
+          example: 9766246538911524
+        agreementId:
+          type: string
+          description: This agreement id needs to used from the Token notification callback. This is only used for International EcoBank Recurring payments.
+          example: TNlHuw0ItOMAP0EW4raC
+    CardResponse:
+      required:
+        - sourceTransactionId
+        - apiGatewayTransactionId
+        - paymentType
+      type: object
+      properties:
+        sourceTransactionId:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+          description: Correlating back the same source transaction ID which was sent in
+            the request object for this transaction. 
+          example: 123e4567-e89b-42d3-a456-556642440000
+        apiGatewayTransactionId:
+          type: string
+          description: Api Gateway transaction ID for this transaction.
+          example: dapg101zatcrh.vodacom.corp-21321-211848-1
+        paymentType:
+          type: string
+          description: This field indicates the type of Card payment transaction initiated from merchant.
+          enum:
+          - ONCEOFF
+          - TOKENIZED
+          - RECURRING
+          example: ONCEOFF
+        onceOffFormPostSA:
+          type: object
+          description: This response group will be returned for once-off SA Card transaction . Merchant application needs to create a HTML form post with the below parameters and submit to lauch the checkout page.
+          required :
+            - PayserverUser
+            - MerchantReference
+            - TransactionCompletedURL
+            - RedirectURL
+            - TransactionStatusCallbackUrl
+            - TransactionStatusCallbackFormat
+            - TransactionStatusCallbackMethod
+            - encXML
+            - currency
+            - TransactionType
+          properties:
+            PayserverUser:
+              type: string
+              description: This is merchant user ID given for the VPG admin site
+              example: User123
+            MerchantReference:
+              type: string
+              maxLength: 20
+              description: Value that uniquely identifies an order submitted for processing.
+            TransactionCompletedURL:
+              type: string
+              maxLength: 256
+              description: >-
+                To improve user experience, the payment gateway can route the user
+                back to the partners preferred page in the event of a successful
+                request.
+              example: www.redirectmehere.co.za
+            RedirectURL:
+              type: string
+              description: >-
+                To improve user experience, the payment gateway can route the user
+                back to the partners preferred page in case of an error.
+              example: www.redirectmehere.co.za
+              maxLength: 256
+            TransactionStatusCallbackUrl:
+              type: string
+              description: >-
+                The URL that we should post the payment notification to, the result
+                should be posted back regardless of the outcome of the transaction.
+                The notification result will be sent to the posted value.
+              example: www.notfiymehere.co.za
+              maxLength: 256
+            TransactionStatusCallbackFormat:
+              type: string
+              description: >-
+                This is the format in which the asynchronous callback message is
+                sent.
+              example: XML
+              maxLength: 4
+            TransactionStatusCallbackMethod:
+              type: string
+              description: >-
+                This is the format in which the asynchronous callback message is
+                sent
+              example: POST
+              maxLength: 4
+            encXML:
+              type: string
+              description: The encrypted XML Transaction object must be passed in this field
+              example: >-
+                eab6458f41f2a6feec99b2c77dee56499f4a22956c150d139d3c82f4c4238f88867c826102de69ca4b80568e62e4453d3d2069d3398acafef2bfdae1c96a0c15eb1b6a3b1ca1398959634ec35c75491013d879798153be55fad1029e35665d1e8c42ca0acf8ad10393af8131e056f0349a3c39dab37b60e9cd0253000964f4f80b27c70bd61ab7de9a61b8f232bd6ada0f226111234b67296cda0d9b48b6b05c98c52e49f9ee28436674dee5d3d5aa366c1550c8b1d46df432b3a76caaa05d461502e54630444bb8d723a21c07be8370c4543739eac2daa26be2f6738e33c05d33bae0fe617637e40e03f181e05f57bebafad2a4bb40fd80d834fab9c6e373f9946cf85a021d41d8dccb87a3016e1079f9ec28c4998c9818f763058c97f22df641824270c57fb2c05176ceb0cb473fe3d0155ed83e6923b22051655d74824502de605e07b63383af24e6713358de3e09eb62afb7c5388a646a2e95936c9b877
+            currency:
+              type: string
+              description: ISO 3 currency code for that particular coutry/opco
+              example: ZAR
+              maxLength: 3
+            TransactionType:
+              type: string
+              description: >-
+                This will indicate the type of transaction requested. Valid Values -
+                01 (Auth+Settle) 02 (Authorisation with a delayed Settle)
+              example: '01'
+              enum:
+                - 1
+                - 2
+              maxLength: 2
+        tokenizedFormPostSA:
+          required:
+          - PayserverUser
+          - EncType
+          - EncXml
+          - ReturnUrl
+          - FailureUrl
+          - NotifyUrl
+          type: object
+          description: This response group will be returned for Tokenized SA Card transaction . Merchant application needs to create a HTML form post with the below parameters and submit to lauch the checkout page.
+          properties:
+            PayserverUser:
+              type: string
+              description: This is merchant user ID given for the VPG admin site
+              example: User123
+            EncType:
+              type: string
+              description: Type of Encryption used for encrypting the XML body
+              example: blowfish
+            EncXml:
+              type: string
+              description: The encrypted XML Transaction object must be passed in this field
+              example: >-
+                eab6458f41f2a6feec99b2c77dee56499f4a22956c150d139d3c82f4c4238f88867c826102de69ca4b80568e62e4453d3d2069d3398acafef2bfdae1c96a0c15eb1b6a3b1ca1398959634ec35c75491013d879798153be55fad1029e35665d1e8c42ca0acf8ad10393af8131e056f0349a3c39dab37b60e9cd0253000964f4f80b27c70bd61ab7de9a61b8f232bd6ada0f226111234b67296cda0d9b48b6b05c98c52e49f9ee28436674dee5d3d5aa366c1550c8b1d46df432b3a76caaa05d461502e54630444bb8d723a21c07be8370c4543739eac2daa26be2f6738e33c05d33bae0fe617637e40e03f181e05f57bebafad2a4bb40fd80d834fab9c6e373f9946cf85a021d41d8dccb87a3016e1079f9ec28c4998c9818f763058c97f22df641824270c57fb2c05176ceb0cb473fe3d0155ed83e6923b22051655d74824502de605e07b63383af24e6713358de3e09eb62afb7c5388a646a2e95936c9b877
+            ReturnUrl:
+              type: string
+              maxLength: 256
+              description: To improve user experience, the payment gateway can route the user back to the partners preferred page in the event of a successful
+                request.
+              example: www.redirectmehere.co.za
+            FailureUrl:
+              type: string
+              maxLength: 256
+              description: To improve user experience, the payment gateway can route the user back to the partners preferred page in the event of an error transaction.
+              example: www.redirectmehere.co.za
+            NotifyUrl:
+              type: string
+              maxLength: 256
+              description: This is the callback url where the token callback is triggred with the token details.
+              example: www.redirectmehere.co.za
+        payGwRedirectUrlPost:
+            type: string
+            description: This is the payment gateway checkout page url which the merchant needs to redirect to launch the checkout page. This is applicable for International Once-off/Tokenized transactions only.
+            example: https://test-ecobank.mtf.gateway.mastercard.com/api/page/version/54/pay?session.id=SESSION0002500576591M1832740I37
+        recurringResp:
+          type: object
+          description: This group is applicable for Recurring Transactions only.
+          required:
+            - sourceTransactionId
+            - apiGatewayTransactionId
+            - customerIdentifier
+            - totalOrderAmount
+            - currencyCode
+            - status
+          properties:
+            sourceTransactionId:
+              type: string
+              format: uuid
+              minLength: 36
+              maxLength: 36
+              description: >-
+                Correlating back the same source transaction ID which was sent in
+                the request object for this transaction. This will help us in
+                tracking the overall request and response flow. UUID should be
+                string with 36 characters (32 hex digits + 4 dashes)
+              example: 123e4567-e89b-42d3-a456-556642440000
+            apiGatewayTransactionId:
+              type: string
+              description: >-
+                Api Gateway transaction ID correlating back the same source
+                transaction ID which was  sent in the request object for this
+                transaction
+              example: dapg101zatcrh.vodacom.corp-21321-211848-1.
+            paymentGatewayTransactionId:
+              type: string
+              maxLength: 50
+              description: The transaction identifier generated by Payment Gateway
+              example: 123e4567-e89b-42d3-a456-556642440000
+            customerIdentifier:
+              type: string
+              maxLength: 100
+              description: This is a unique identifier for the customer as used by the Merchant to identify the customer on his system. The value passed in the
+                request will be correlated back in the response.
+              example: abc@xyz.com
+            totalOrderAmount:
+              type: integer
+              format: double
+              description: Total transaction amount. This can be decimal upto 2 precision. This value should match sum of all subTotal for SA once-off request.
+              example: 15.99
+            currencyCode:
+              type: string
+              description: The ISO 4217 3 letter code for the transaction currency.
+              example: ZAR
+              enum:
+              - LSL
+              - TZS
+              - ZAR
+            status:
+              type: string
+              description: The transaction status from the bank.
+              example: success
+            statusCode:
+              type: string
+              description: The status code , if recieved from the bank.
+              example: "00"
+            statusMessage:
+              type: string
+              description: Message regarding the status of the transaction. This field will not always have a value. This is a user friendly message that can be displayed to the user
+              example: The request was successfully processed
+            pgErrorCode:
+              type: string
+              description: The status code , if recieved from the payment gateway
+              example: "00"
+            pgErrorDescription:
+              type: string
+              description: Message regarding the status of the transaction. This field will not always have a value. This is a user friendly message that can be displayed to the user
+              example: The request was successfully processed
+    CardPaymentStatusNotificationCallBack:
+      type: object
+      description: This Callback is applicable for 1. Once-off transactions for all countryin scope 2. Tokenized transactions for all country in scope 3. Recurring Transaction for SA.  
+      required:
+        - sourceTransactionId
+        - merchantTransactionReference
+        - apiGatewayTransactionId
+        - customerIdentifier
+        - totalOrderAmount
+        - currencyCode
+        - paymentType
+        - status
+      properties:
+        sourceTransactionId:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+          description: Correlating back the same source transaction ID which was sent in
+            the request object for this transaction. This will help us in
+            tracking the overall request and response flow. UUID should be
+            string with 36 characters (32 hex digits + 4 dashes)
+          example: 123e4567-e89b-42d3-a456-556642440000
+        apiGatewayTransactionId:
+          type: string
+          description: Api Gateway transaction ID correlating back the same source
+            transaction ID which was  sent in the request object for this
+            transaction
+          example: dapg101zatcrh.vodacom.corp-21321-211848-1.
+        paymentType:
+          type: string
+          description: This field indicates the type of Card payment transaction initiated from merchant.
+          enum:
+          - ONCEOFF
+          - TOKENIZED
+          - RECURRING
+          example: ONCEOFF
+        merchantTransactionReference:
+          type: string
+          description: The Merchant Reference is a unique Identifier for the Payment Request . This is required by VFS Payment gateway. It should be a string with 20 characters
+          minLength: 20
+          maxLength: 20
+          example: TNlHuw0ItOMAP0EW4raC
+        paymentGatewayTransactionId:
+          type: string
+          maxLength: 50
+          description: The transaction identifier generated by Payment Gateway
+          example: 123e4567-e89b-42d3-a456-556642440000
+        customerIdentifier:
+          type: string
+          maxLength: 100
+          description: This is a unique identifier for the customer as used by the Merchant to identify the customer on his system. The value passed in the
+            request will be correlated back in the response.
+          example: abc@xyz.com
+        totalOrderAmount:
+          type: integer
+          description: Total transaction amount. This can be decimal upto 2 precision. This value should match sum of all subTotal for SA once-off request.
+          example: 15.99
+        currencyCode:
+          type: string
+          description: The ISO 4217 3 letter code for the transaction currency.
+          example: ZAR
+          enum:
+            - LSL
+            - TZS
+            - ZAR
+        status:
+          type: string
+          description: The transaction status from the Payment Gateway.
+          example: success
+        apigeeHashStatus:
+          type: string
+          description: The transaction status for has check between VFS and Apigee
+          example: Success
+        statusCode:
+          type: string
+          description: The status code , if recieved from the bank
+          example: "00"
+        statusMessage:
+          type: string
+          description: Message regarding the status of the transaction from bank. This field will not always have a value. This is a user friendly message that can be displayed to the user
+          example: The request was successfully processed
+          
+        pgErrorCode:
+          type: string
+          description: The status code , if recieved from the payment gateway
+          example: "00"
+        pgErrorDescription:
+          type: string
+          description: Message regarding the status of the transaction. This field will not always have a value. This is a user friendly message that can be displayed to the user
+          example: The request was successfully processed
+          
+        encryptedHash:
+          type: string
+          description: SHA256 HMac used to ensure that certain fields in the message have not been altered after the encrypted hash was generated. Encrypted
+            value used to check that the values posted back correspond to a
+            valid Payment Gateway Postback. The encrypted Hash has to be
+            verified once the response is recieved from APiGateway. This field is applicable only SA Card Transaction Status
+          example: >-
+            eedcba106cd8fef3ba6cec5ec80de7d7d7fc90343028bf95b908718c671d0fe885ca08b206d788de009d237a93c18e66edf6ede3f5ca7057e23474106465dcc6
+    CardPaymentTokenNotificationCallBack:
+      type: object
+      required:
+        - sourceTransactionId
+        - apiGatewayTransactionId
+        - merchantTransactionReference
+        - customerCardToken
+        - customerIdentifier
+        - totalOrderAmount
+        - currencyCode
+        - status
+      properties:
+        sourceTransactionId:
+          type: string
+          format: uuid
+          minLength: 36
+          maxLength: 36
+          description: Correlating back the same source transaction ID which was sent in
+            the request object for this transaction. This will help us in
+            tracking the overall request and response flow. UUID should be
+            string with 36 characters (32 hex digits + 4 dashes)
+          example: 123e4567-e89b-42d3-a456-556642440000
+        apiGatewayTransactionId:
+          type: string
+          description: Api Gateway transaction ID correlating back the same source
+            transaction ID which was  sent in the request object for this
+            transaction
+          example: dapg101zatcrh.vodacom.corp-21321-211848-1.
+        merchantTransactionReference:
+          type: string
+          description: The Merchant Reference is a unique Identifier for the Payment Request . This is required by VFS Payment gateway. It should be a string with 20 characters
+          minLength: 20
+          maxLength: 20
+          example: TNlHuw0ItOMAP0EW4raC
+        customerIdentifier:
+          type: string
+          maxLength: 100
+          description: This is a unique identifier for the customer as used by the Merchant to identify the customer on his system. The value passed in the
+            request will be correlated back in the response.
+          example: abc@xyz.com
+        customerCardToken:
+          type: string
+          description: Token Issued for the Recurring transaction to the merchant for a respective customer Card Transaction. This field is mandatory only for recurring transactions.
+          example: 9766246538911524
+        agreementId:
+          type: string
+          description: This is an agreement id which needs to be used as part of the subsequent Recurring payments. This is only used for International EcoBank Recurring payments.
+          example: TNlHuw0ItOMAP0EW4raC
+        status:
+          type: string
+          description: The transaction status from the Payment Gateway.
+          example: success
+        statusCode:
+          type: string
+          description: The status code , if recieved from the bank
+          example: "00"
+        statusMessage:
+          type: string
+          description: Message regarding the status of the transaction from the bank. This field will not always have a value. This is a user friendly message that can be displayed to the user
+          example: The request was successfully processed
+        pgErrorCode:
+          type: string
+          description: The status code , if recieved from the payment gateway
+          example: "00"
+        pgErrorDescription:
+          type: string
+          description: Message regarding the status of the transaction. This field will not always have a value. This is a user friendly message that can be displayed to the user
+          example: The request was successfully processed
+
+
+    ErrorNotFound:
+      type: object
+      properties:
+        sourceTransactionId:
+          maxLength: 36
+          minLength: 36
+          type: string
+          format: uuid
+          description: Correlating back the same source transaction ID which was sent in
+            the request object for this transaction. 
+          example: 123e4567-e89b-42d3-a456-556642440000
+        apiGatewayTransactionId:
+          type: string
+          description: ApiGateway transaction ID for this transaction.
+          example: xxxxxxxzatcrh.vodacom.corp-61992-3692433-1
+        errorCode:
+          type: string
+          example: '404-001'
+        errorType:
+          type: string
+          example: InvalidInput
+        details:
+          type: object
+          properties:
+            description:
+              type: string
+              example: The requested url is not available.
+            message:
+              type: string
+              example: Resource Not Found
+      description: Resource Not Found
+    ErrorBadRequest:
+      type: object
+      properties:
+        sourceTransactionId:
+          maxLength: 36
+          minLength: 36
+          type: string
+          format: uuid
+          description: Correlating back the same source transaction ID which was sent in
+            the request object for this transaction.
+          example: 123e4567-e89b-42d3-a456-556642440000
+        apiGatewayTransactionId:
+          type: string
+          description: ApiGateway transaction ID generated for the transaction
+          example: xxxxxxxzatcrh.vodacom.corp-61992-3692433-1
+        errorCode:
+          type: string
+          example: '400-01'
+        errorType:
+          type: string
+          example: InvalidInput
+        details:
+          type: object
+          properties:
+            description:
+              type: string
+              example: Missing Required Parameters in request
+            message:
+              type: string
+              example: Request Validation Failure
+      description: Error Message for Missing Mandatory Field in JSON Payload
+    SpikeError:
+      type: object
+      properties:
+        sourceTransactionId:
+          maxLength: 36
+          minLength: 36
+          type: string
+          format: uuid
+          description: Correlating back the same source transaction ID which was sent in
+            the request object for this transaction.
+          example: 123e4567-e89b-42d3-a456-556642440000
+        apiGatewayTransactionId:
+          type: string
+          description: ApiGateway transaction ID for this transaction.
+          example: xxxxxxxzatcrh.vodacom.corp-61992-3692433-1
+        errorCode:
+          type: string
+          example: 429-001
+        errorType:
+          type: string
+          example: 
+        details:
+          type: object
+          properties:
+            description:
+              type: string
+              example: Rate limit has been exhausted
+            message:
+              type: string
+              example: Too Many Requests. Rate limit has been exhausted
+      description: Error Message for the Spike Arrest Policy
+    ErrorInternalServer:
+      type: object
+      properties:
+        sourceTransactionId:
+          maxLength: 36
+          minLength: 36
+          type: string
+          format: uuid
+          description: Correlating back the same source transaction ID which was sent in
+            the request object for this transaction. 
+          example: 123e4567-e89b-42d3-a456-556642440000
+        apiGatewayTransactionId:
+          type: string
+          description: ApiGateway transaction ID for this transaction.
+          example: xxxxxxxzatcrh.vodacom.corp-61992-3692433-1
+        errorCode:
+          type: string
+          example: '500-01'
+        errorType:
+          type: string
+          example: ServerError
+        details:
+          type: object
+          properties:
+            description:
+              type: string
+              example: Request processing failed at backend due to technical error
+            message:
+              type: string
+              example: Backend Technical Error
+      description: Backend Error
+    ErrorUnauthorized:
+      type: object
+      properties:
+        sourceTransactionId:
+          maxLength: 36
+          minLength: 36
+          type: string
+          format: uuid
+          description: Correlating back the same source transaction ID which was sent in
+            the request object for this transaction. 
+          example: 123e4567-e89b-42d3-a456-556642440000
+        apiGatewayTransactionId:
+          type: string
+          description: ApiGateway transaction ID for this transaction.
+          example: xxxxxxxzatcrh.vodacom.corp-61992-3692433-1
+        errorCode:
+          type: string
+          example: '401-001'
+        errorType:
+          type: string
+          example: UnauthorizedAccess
+        details:
+          type: object
+          properties:
+            description:
+              type: string
+              example: Oauth Access Token provided in the request is expired. Please request new token
+            message:
+              type: string
+              example: Expired Access Token
+      description: Error Message for the unauthorized OAuth token
+      
+  securitySchemes:
+    OAuth2:
+      type: oauth2
+      flows:
+        clientCredentials:
+          tokenUrl: "https://apix.vodacom.co.za/oauth-framework/generateaccesstoken"

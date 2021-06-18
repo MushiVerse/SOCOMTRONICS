@@ -1,0 +1,1165 @@
+{
+	"info": {
+		"_postman_id": "38214ee8-9444-4935-9162-cec9d3b12c96",
+		"name": "PaymentManagement Sandbox",
+		"description": "This Swagger document describes the PaymentManagemnt API which facilitates a variety of payment methods (including card, eft and carrier billing ) for various opcos (including South Africa, Tanzania, Lesotho and others). This document will be updated as new opcos and payment methods are added. <p>Current Scope : Carrier Billing (Lesotho and Tanzania), EFT (South Africa), Card (South Africa), International Cards, mpesa (Tanzania) </p>\n\nContact Support:\n Email: apipulse@vodacom.co.za",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "{country Code}",
+			"item": [
+				{
+					"name": "Carrier Billing Payment Method",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": -19110305.44976002,\n    \"currencyCode\": \"TZS\",\n    \"carrierBillingParameters\": {\n        \"serviceId\": \"vc-accenture-avs-svod-01\",\n        \"ratingAttributes\": {\n            \"contentName\": \"Nollywood 30 Days\",\n            \"assetId\": \"1234\",\n            \"rate\": 0.2,\n            \"preRatePriceIsGross\": true,\n            \"extTransId\": \"ullamco\",\n            \"invoiceText\": \"non aliquip\"\n        }\n    }\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/:countryCode/carrierbilling",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								":countryCode",
+								"carrierbilling"
+							],
+							"variable": [
+								{
+									"key": "countryCode",
+									"value": "tz",
+									"description": "(Required) Request Originator Opco. The ISO 3166-1 alpha-2 code for the user's country."
+								}
+							]
+						},
+						"description": "This operation facilitates the processing of Carrier Billing payment transaction"
+					},
+					"response": [
+						{
+							"name": "Too Many Requests",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": -19110305.44976002,\n    \"currencyCode\": \"TZS\",\n    \"carrierBillingParameters\": {\n        \"serviceId\": \"vc-accenture-avs-svod-01\",\n        \"ratingAttributes\": {\n            \"contentName\": \"Nollywood 30 Days\",\n            \"assetId\": \"1234\",\n            \"rate\": 0.2,\n            \"preRatePriceIsGross\": true,\n            \"extTransId\": \"ullamco\",\n            \"invoiceText\": \"non aliquip\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/carrierbilling",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"carrierbilling"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "Too Many Requests",
+							"code": 429,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"errorCode\": \"429-001\",\n \"errorType\": \"ex ut\",\n \"details\": {\n  \"description\": \"Rate limit has been exhausted\",\n  \"message\": \"Too Many Requests. Rate limit has been exhausted\"\n }\n}"
+						},
+						{
+							"name": "Carrier Billing Charge Completed",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": -19110305.44976002,\n    \"currencyCode\": \"TZS\",\n    \"carrierBillingParameters\": {\n        \"serviceId\": \"vc-accenture-avs-svod-01\",\n        \"ratingAttributes\": {\n            \"contentName\": \"Nollywood 30 Days\",\n            \"assetId\": \"1234\",\n            \"rate\": 0.2,\n            \"preRatePriceIsGross\": true,\n            \"extTransId\": \"ullamco\",\n            \"invoiceText\": \"non aliquip\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/carrierbilling",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"carrierbilling"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"dapg101zatcrh.vodacom.corp-21321-211848-1\",\n \"customerIdentifier\": \"27828640000\",\n \"productIdentifier\": \"The Vodacom Movie\",\n \"totalOrderAmount\": 88771406.25797954,\n \"transactionStatus\": \"Success\"\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": -19110305.44976002,\n    \"currencyCode\": \"TZS\",\n    \"carrierBillingParameters\": {\n        \"serviceId\": \"vc-accenture-avs-svod-01\",\n        \"ratingAttributes\": {\n            \"contentName\": \"Nollywood 30 Days\",\n            \"assetId\": \"1234\",\n            \"rate\": 0.2,\n            \"preRatePriceIsGross\": true,\n            \"extTransId\": \"ullamco\",\n            \"invoiceText\": \"non aliquip\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/carrierbilling",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"carrierbilling"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"errorCode\": \"404-001\",\n \"errorType\": \"InvalidInput\",\n \"details\": {\n  \"description\": \"The requested url is not available.\",\n  \"message\": \"Resource Not Found\"\n }\n}"
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": -19110305.44976002,\n    \"currencyCode\": \"TZS\",\n    \"carrierBillingParameters\": {\n        \"serviceId\": \"vc-accenture-avs-svod-01\",\n        \"ratingAttributes\": {\n            \"contentName\": \"Nollywood 30 Days\",\n            \"assetId\": \"1234\",\n            \"rate\": 0.2,\n            \"preRatePriceIsGross\": true,\n            \"extTransId\": \"ullamco\",\n            \"invoiceText\": \"non aliquip\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/carrierbilling",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"carrierbilling"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"errorCode\": \"500-01\",\n \"errorType\": \"ServerError\",\n \"details\": {\n  \"description\": \"Request processing failed at backend due to technical error\",\n  \"message\": \"Backend Technical Error\"\n }\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": -19110305.44976002,\n    \"currencyCode\": \"TZS\",\n    \"carrierBillingParameters\": {\n        \"serviceId\": \"vc-accenture-avs-svod-01\",\n        \"ratingAttributes\": {\n            \"contentName\": \"Nollywood 30 Days\",\n            \"assetId\": \"1234\",\n            \"rate\": 0.2,\n            \"preRatePriceIsGross\": true,\n            \"extTransId\": \"ullamco\",\n            \"invoiceText\": \"non aliquip\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/carrierbilling",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"carrierbilling"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"errorCode\": \"401-001\",\n \"errorType\": \"UnauthorizedAccess\",\n \"details\": {\n  \"description\": \"Oauth Access Token provided in the request is expired. Please request new token\",\n  \"message\": \"Expired Access Token\"\n }\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": -19110305.44976002,\n    \"currencyCode\": \"TZS\",\n    \"carrierBillingParameters\": {\n        \"serviceId\": \"vc-accenture-avs-svod-01\",\n        \"ratingAttributes\": {\n            \"contentName\": \"Nollywood 30 Days\",\n            \"assetId\": \"1234\",\n            \"rate\": 0.2,\n            \"preRatePriceIsGross\": true,\n            \"extTransId\": \"ullamco\",\n            \"invoiceText\": \"non aliquip\"\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/carrierbilling",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"carrierbilling"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"errorCode\": \"400-01\",\n \"errorType\": \"InvalidInput\",\n \"details\": {\n  \"description\": \"Missing Required Parameters in request\",\n  \"message\": \"Request Validation Failure\"\n }\n}"
+						}
+					]
+				},
+				{
+					"name": "EFT Payment Method",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"merchantIdentifier\": \"AP_PRT_AVS\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": -99484513,\n    \"currencyCode\": \"ZAR\",\n    \"eftParameters\": {\n        \"merchantNotifyURL\": \"https://www.mycoolwebsite.com/videos\",\n        \"registerTokenProfile\": true,\n        \"merchantSuccessWebRedirectUrl\": \"www.redirectmehere.co.za\",\n        \"merchantErrorWebRedirectUrl\": \"qui officia id\",\n        \"merchantCancelWebRedirectUrl\": \"voluptate ullamco Duis amet dolor\",\n        \"customerBankEFTTokenProfileID\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n        \"customerBankEFTToken\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5-ttebsndjwml-456628282\",\n        \"tokenNotificationUrl\": \"http://mycoolwebsite.com/whereIKeepTransactionLogs\",\n        \"tokenDeletedNotificationURL\": \"http://mycoolwebsite.com/whereIKeepTransactionLogs\"\n    },\n    \"customParameters\": [\n        {\n            \"name\": \"et sit sed\",\n            \"value\": \"labore Ut officia eu\"\n        },\n        {\n            \"name\": \"cupidatat veniam Duis elit\",\n            \"value\": \"magna ea Lorem Ut\"\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/:countryCode/eft/initiate",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								":countryCode",
+								"eft",
+								"initiate"
+							],
+							"variable": [
+								{
+									"key": "countryCode",
+									"value": "za",
+									"description": "(Required) Request Originator country code. The ISO 3166-1 alpha-2 code for the user's country."
+								}
+							]
+						},
+						"description": "This operation facilitates the processing of an EFT payment transaction"
+					},
+					"response": [
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"merchantIdentifier\": \"AP_PRT_AVS\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": 58218514,\n    \"currencyCode\": \"ZAR\",\n    \"eftParameters\": {\n        \"merchantNotifyURL\": \"https://www.mycoolwebsite.com/videos\",\n        \"registerTokenProfile\": true,\n        \"merchantSuccessWebRedirectUrl\": \"www.redirectmehere.co.za\",\n        \"merchantErrorWebRedirectUrl\": \"sint mollit\",\n        \"merchantCancelWebRedirectUrl\": \"culpa aliquip\",\n        \"customerBankEFTTokenProfileID\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n        \"customerBankEFTToken\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5-ttebsndjwml-456628282\",\n        \"tokenNotificationUrl\": \"http://mycoolwebsite.com/whereIKeepTransactionLogs\",\n        \"tokenDeletedNotificationURL\": \"http://mycoolwebsite.com/whereIKeepTransactionLogs\"\n    },\n    \"customParameters\": [\n        {\n            \"name\": \"laboris commodo veniam laborum\",\n            \"value\": \"voluptate Duis deserunt\"\n        },\n        {\n            \"name\": \"sint mollit\",\n            \"value\": \"lab\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/eft/initiate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"eft",
+										"initiate"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"errorCode\": \"401-001\",\n \"errorType\": \"UnauthorizedAccess\",\n \"details\": {\n  \"description\": \"Oauth Access Token provided in the request is expired. Please request new token\",\n  \"message\": \"Expired Access Token\"\n }\n}"
+						},
+						{
+							"name": "EFT Payment Request Initiation Url created using the Payment Object Parameters",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"merchantIdentifier\": \"AP_PRT_AVS\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": 58218514,\n    \"currencyCode\": \"ZAR\",\n    \"eftParameters\": {\n        \"merchantNotifyURL\": \"https://www.mycoolwebsite.com/videos\",\n        \"registerTokenProfile\": true,\n        \"merchantSuccessWebRedirectUrl\": \"www.redirectmehere.co.za\",\n        \"merchantErrorWebRedirectUrl\": \"sint mollit\",\n        \"merchantCancelWebRedirectUrl\": \"culpa aliquip\",\n        \"customerBankEFTTokenProfileID\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n        \"customerBankEFTToken\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5-ttebsndjwml-456628282\",\n        \"tokenNotificationUrl\": \"http://mycoolwebsite.com/whereIKeepTransactionLogs\",\n        \"tokenDeletedNotificationURL\": \"http://mycoolwebsite.com/whereIKeepTransactionLogs\"\n    },\n    \"customParameters\": [\n        {\n            \"name\": \"laboris commodo veniam laborum\",\n            \"value\": \"voluptate Duis deserunt\"\n        },\n        {\n            \"name\": \"sint mollit\",\n            \"value\": \"lab\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/eft/initiate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"eft",
+										"initiate"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"dapg101zatcrh.vodacom.corp-21321-211848-1\",\n \"payGwTransactionId\": \"4322a215-3b6d-4387-a055-52f4941d2a6c\",\n \"payGwRedirectUrl\": \"https://pay.ozow.com/5e2a8437-9057-49f2-bbc9-1fc1104288e5/secure\",\n \"status\": \"success\",\n \"statusDescription\": \"laborum ut nostrud\"\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"merchantIdentifier\": \"AP_PRT_AVS\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": 58218514,\n    \"currencyCode\": \"ZAR\",\n    \"eftParameters\": {\n        \"merchantNotifyURL\": \"https://www.mycoolwebsite.com/videos\",\n        \"registerTokenProfile\": true,\n        \"merchantSuccessWebRedirectUrl\": \"www.redirectmehere.co.za\",\n        \"merchantErrorWebRedirectUrl\": \"sint mollit\",\n        \"merchantCancelWebRedirectUrl\": \"culpa aliquip\",\n        \"customerBankEFTTokenProfileID\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n        \"customerBankEFTToken\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5-ttebsndjwml-456628282\",\n        \"tokenNotificationUrl\": \"http://mycoolwebsite.com/whereIKeepTransactionLogs\",\n        \"tokenDeletedNotificationURL\": \"http://mycoolwebsite.com/whereIKeepTransactionLogs\"\n    },\n    \"customParameters\": [\n        {\n            \"name\": \"laboris commodo veniam laborum\",\n            \"value\": \"voluptate Duis deserunt\"\n        },\n        {\n            \"name\": \"sint mollit\",\n            \"value\": \"lab\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/eft/initiate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"eft",
+										"initiate"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"errorCode\": \"400-01\",\n \"errorType\": \"InvalidInput\",\n \"details\": {\n  \"description\": \"Missing Required Parameters in request\",\n  \"message\": \"Request Validation Failure\"\n }\n}"
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"merchantIdentifier\": \"AP_PRT_AVS\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": 58218514,\n    \"currencyCode\": \"ZAR\",\n    \"eftParameters\": {\n        \"merchantNotifyURL\": \"https://www.mycoolwebsite.com/videos\",\n        \"registerTokenProfile\": true,\n        \"merchantSuccessWebRedirectUrl\": \"www.redirectmehere.co.za\",\n        \"merchantErrorWebRedirectUrl\": \"sint mollit\",\n        \"merchantCancelWebRedirectUrl\": \"culpa aliquip\",\n        \"customerBankEFTTokenProfileID\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n        \"customerBankEFTToken\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5-ttebsndjwml-456628282\",\n        \"tokenNotificationUrl\": \"http://mycoolwebsite.com/whereIKeepTransactionLogs\",\n        \"tokenDeletedNotificationURL\": \"http://mycoolwebsite.com/whereIKeepTransactionLogs\"\n    },\n    \"customParameters\": [\n        {\n            \"name\": \"laboris commodo veniam laborum\",\n            \"value\": \"voluptate Duis deserunt\"\n        },\n        {\n            \"name\": \"sint mollit\",\n            \"value\": \"lab\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/eft/initiate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"eft",
+										"initiate"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"errorCode\": \"500-01\",\n \"errorType\": \"ServerError\",\n \"details\": {\n  \"description\": \"Request processing failed at backend due to technical error\",\n  \"message\": \"Backend Technical Error\"\n }\n}"
+						},
+						{
+							"name": "Too Many Requests",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"merchantIdentifier\": \"AP_PRT_AVS\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": 58218514,\n    \"currencyCode\": \"ZAR\",\n    \"eftParameters\": {\n        \"merchantNotifyURL\": \"https://www.mycoolwebsite.com/videos\",\n        \"registerTokenProfile\": true,\n        \"merchantSuccessWebRedirectUrl\": \"www.redirectmehere.co.za\",\n        \"merchantErrorWebRedirectUrl\": \"sint mollit\",\n        \"merchantCancelWebRedirectUrl\": \"culpa aliquip\",\n        \"customerBankEFTTokenProfileID\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n        \"customerBankEFTToken\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5-ttebsndjwml-456628282\",\n        \"tokenNotificationUrl\": \"http://mycoolwebsite.com/whereIKeepTransactionLogs\",\n        \"tokenDeletedNotificationURL\": \"http://mycoolwebsite.com/whereIKeepTransactionLogs\"\n    },\n    \"customParameters\": [\n        {\n            \"name\": \"laboris commodo veniam laborum\",\n            \"value\": \"voluptate Duis deserunt\"\n        },\n        {\n            \"name\": \"sint mollit\",\n            \"value\": \"lab\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/eft/initiate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"eft",
+										"initiate"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "Too Many Requests",
+							"code": 429,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"errorCode\": \"429-001\",\n \"errorType\": \"ex ut\",\n \"details\": {\n  \"description\": \"Rate limit has been exhausted\",\n  \"message\": \"Too Many Requests. Rate limit has been exhausted\"\n }\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"merchantIdentifier\": \"AP_PRT_AVS\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": 58218514,\n    \"currencyCode\": \"ZAR\",\n    \"eftParameters\": {\n        \"merchantNotifyURL\": \"https://www.mycoolwebsite.com/videos\",\n        \"registerTokenProfile\": true,\n        \"merchantSuccessWebRedirectUrl\": \"www.redirectmehere.co.za\",\n        \"merchantErrorWebRedirectUrl\": \"sint mollit\",\n        \"merchantCancelWebRedirectUrl\": \"culpa aliquip\",\n        \"customerBankEFTTokenProfileID\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n        \"customerBankEFTToken\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5-ttebsndjwml-456628282\",\n        \"tokenNotificationUrl\": \"http://mycoolwebsite.com/whereIKeepTransactionLogs\",\n        \"tokenDeletedNotificationURL\": \"http://mycoolwebsite.com/whereIKeepTransactionLogs\"\n    },\n    \"customParameters\": [\n        {\n            \"name\": \"laboris commodo veniam laborum\",\n            \"value\": \"voluptate Duis deserunt\"\n        },\n        {\n            \"name\": \"sint mollit\",\n            \"value\": \"lab\"\n        }\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/eft/initiate",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"eft",
+										"initiate"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"errorCode\": \"404-001\",\n \"errorType\": \"InvalidInput\",\n \"details\": {\n  \"description\": \"The requested url is not available.\",\n  \"message\": \"Resource Not Found\"\n }\n}"
+						}
+					]
+				},
+				{
+					"name": "Card Payment Method",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "MrQHpkVYC8QZ6vw0tHnnFFDh2gm9",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"merchantTransactionReference\": \"TNlHuw0ItOMAP0EW4raC\",\n    \"merchantIdentifier\": \"API_PRNT_AVS\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": 30179181,\n    \"currencyCode\": \"TZS\",\n    \"paymentType\": \"ONCEOFF\",\n    \"merchantNotifyUrl\": \"www.notfiymehere.co.za\",\n    \"customParameters\": [\n        {\n            \"name\": \"sit\",\n            \"value\": \"consequat et\"\n        },\n        {\n            \"name\": \"occaecat elit tempor in veniam\",\n            \"value\": \"fugiat labore anim cupidatat\"\n        }\n    ],\n    \"products\": [\n        {\n            \"productCode\": \"proident et\",\n            \"productDescription\": \"test\",\n            \"price\": 100,\n            \"quantity\": 1,\n            \"vatRate\": 15,\n            \"subTotal\": 115\n        },\n        {\n            \"productCode\": \"eu consectetur reprehenderit officia\",\n            \"productDescription\": \"test\",\n            \"price\": 100,\n            \"quantity\": 1,\n            \"vatRate\": 15,\n            \"subTotal\": 115\n        }\n    ],\n    \"deliveryAmount\": -4984863.588873178,\n    \"merchantErrorWebRedirectUrl\": \"www.redirectmehere.co.za\",\n    \"merchantCancelWebRedirectUrl\": \"www.redirectmehere.co.za\",\n    \"merchantSuccessWebRedirectUrl\": \"www.redirectmehere.co.za\",\n    \"merchantTokenNotifyUrl\": \"www.redirectmehere.co.za\",\n    \"customerCardToken\": \"consequat\",\n    \"agreementId\": \"TNlHuw0ItOMAP0EW4raC\"\n}"
+						},
+						"url": {
+							"raw": "https://qaapix.vodacom.co.za/v1/paymentsandbox/za/card/initiate",
+							"protocol": "https",
+							"host": [
+								"qaapix",
+								"vodacom",
+								"co",
+								"za"
+							],
+							"path": [
+								"v1",
+								"paymentsandbox",
+								"za",
+								"card",
+								"initiate"
+							]
+						},
+						"description": "This operation facilitates the processing of an Card payment transaction for all countries in scope"
+					},
+					"response": []
+				},
+				{
+					"name": "Card Payment Method Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "MrQHpkVYC8QZ6vw0tHnnFFDh2gm9",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"merchantTransactionReference\": \"TNlHuw0ItOMAP0EW4raC\",\n    \"merchantIdentifier\": \"API_PRNT_AVS\",\n    \"customerIdentifier\": \"abc@xyz.com\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"totalOrderAmount\": 30179181,\n    \"currencyCode\": \"TZS\",\n    \"paymentType\": \"ONCEOFF\",\n    \"merchantNotifyUrl\": \"www.notfiymehere.co.za\",\n    \"customParameters\": [\n        {\n            \"name\": \"sit\",\n            \"value\": \"consequat et\"\n        },\n        {\n            \"name\": \"occaecat elit tempor in veniam\",\n            \"value\": \"fugiat labore anim cupidatat\"\n        }\n    ],\n    \"products\": [\n        {\n            \"productCode\": \"proident et\",\n            \"productDescription\": \"test\",\n            \"price\": 100,\n            \"quantity\": 1,\n            \"vatRate\": 15,\n            \"subTotal\": 115\n        },\n        {\n            \"productCode\": \"eu consectetur reprehenderit officia\",\n            \"productDescription\": \"test\",\n            \"price\": 100,\n            \"quantity\": 1,\n            \"vatRate\": 15,\n            \"subTotal\": 115\n        }\n    ],\n    \"deliveryAmount\": -4984863.588873178,\n    \"merchantErrorWebRedirectUrl\": \"www.redirectmehere.co.za\",\n    \"merchantCancelWebRedirectUrl\": \"www.redirectmehere.co.za\",\n    \"merchantSuccessWebRedirectUrl\": \"www.redirectmehere.co.za\",\n    \"merchantTokenNotifyUrl\": \"www.redirectmehere.co.za\",\n    \"customerCardToken\": \"consequat\",\n    \"agreementId\": \"TNlHuw0ItOMAP0EW4raC\"\n}"
+						},
+						"url": {
+							"raw": "https://qaapix.vodacom.co.za/v1/paymentsandbox/za/card/initiate",
+							"protocol": "https",
+							"host": [
+								"qaapix",
+								"vodacom",
+								"co",
+								"za"
+							],
+							"path": [
+								"v1",
+								"paymentsandbox",
+								"za",
+								"card",
+								"initiate"
+							]
+						},
+						"description": "This operation facilitates the processing of an Card payment transaction for all countries in scope"
+					},
+					"response": []
+				},
+				{
+					"name": "Mpesa Payment Method",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"customerIdentifier\": \"255754710119\",\n    \"merchantName\": \"CELLULANT LIPA BILL\",\n    \"merchantAccountNumber\": \"occ\",\n    \"merchantIdentifier\": \"API_PRNT_AVS\",\n    \"currencyCode\": \"TZS\",\n    \"totalOrderAmount\": 200,\n    \"merchantNotifyURL\": \"http://10.154.10.46:3200/URL/TransactionListener2\",\n    \"merchantTransactionReference\": \"quis est ea enim inc\",\n    \"sourceTimestamp\": \"2016-03-25T12:00:00.000\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"language\": \"en\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/:countryCode/mpesa",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								":countryCode",
+								"mpesa"
+							],
+							"variable": [
+								{
+									"key": "countryCode",
+									"value": "tz",
+									"description": "(Required) Request Originator country code. The ISO 3166-1 alpha-2 code for the user's country."
+								}
+							]
+						},
+						"description": "This operation facilitates the processing of Mpesa transaction"
+					},
+					"response": [
+						{
+							"name": "Mpesa sends Push SMS to Subscriber",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"customerIdentifier\": \"255754710119\",\n    \"merchantName\": \"CELLULANT LIPA BILL\",\n    \"merchantAccountNumber\": \"occ\",\n    \"merchantIdentifier\": \"API_PRNT_AVS\",\n    \"currencyCode\": \"TZS\",\n    \"totalOrderAmount\": 200,\n    \"merchantNotifyURL\": \"http://10.154.10.46:3200/URL/TransactionListener2\",\n    \"merchantTransactionReference\": \"quis est ea enim inc\",\n    \"sourceTimestamp\": \"2016-03-25T12:00:00.000\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"language\": \"en\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/mpesa",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"mpesa"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n \"payGwTransactionId\": \"8d5f80a6fbb84c49ba434cbdf64f48ee\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"transactionReference\": \"voluptate ad laborem\",\n \"customerIdentifier\": \"255754710119\",\n \"currencyCode\": \"TZS\",\n \"totalOrderAmount\": 200,\n \"status\": \"Processed\",\n \"sourceTimestamp\": \"2016-03-25T12:00:00.000\",\n \"productIdentifier\": \"Video Play Services\",\n \"statusCode\": \"-1\",\n \"proident4d3\": 65939825.43919945,\n \"eaa3\": false\n}"
+						},
+						{
+							"name": "Internal Server Error",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"customerIdentifier\": \"255754710119\",\n    \"merchantName\": \"CELLULANT LIPA BILL\",\n    \"merchantAccountNumber\": \"occ\",\n    \"merchantIdentifier\": \"API_PRNT_AVS\",\n    \"currencyCode\": \"TZS\",\n    \"totalOrderAmount\": 200,\n    \"merchantNotifyURL\": \"http://10.154.10.46:3200/URL/TransactionListener2\",\n    \"merchantTransactionReference\": \"quis est ea enim inc\",\n    \"sourceTimestamp\": \"2016-03-25T12:00:00.000\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"language\": \"en\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/mpesa",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"mpesa"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"errorCode\": \"500-01\",\n \"errorType\": \"ServerError\",\n \"details\": {\n  \"description\": \"Request processing failed at backend due to technical error\",\n  \"message\": \"Backend Technical Error\"\n }\n}"
+						},
+						{
+							"name": "Too Many Requests",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"customerIdentifier\": \"255754710119\",\n    \"merchantName\": \"CELLULANT LIPA BILL\",\n    \"merchantAccountNumber\": \"occ\",\n    \"merchantIdentifier\": \"API_PRNT_AVS\",\n    \"currencyCode\": \"TZS\",\n    \"totalOrderAmount\": 200,\n    \"merchantNotifyURL\": \"http://10.154.10.46:3200/URL/TransactionListener2\",\n    \"merchantTransactionReference\": \"quis est ea enim inc\",\n    \"sourceTimestamp\": \"2016-03-25T12:00:00.000\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"language\": \"en\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/mpesa",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"mpesa"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "Too Many Requests",
+							"code": 429,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"errorCode\": \"429-001\",\n \"errorType\": \"ex ut\",\n \"details\": {\n  \"description\": \"Rate limit has been exhausted\",\n  \"message\": \"Too Many Requests. Rate limit has been exhausted\"\n }\n}"
+						},
+						{
+							"name": "Not Found",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"customerIdentifier\": \"255754710119\",\n    \"merchantName\": \"CELLULANT LIPA BILL\",\n    \"merchantAccountNumber\": \"occ\",\n    \"merchantIdentifier\": \"API_PRNT_AVS\",\n    \"currencyCode\": \"TZS\",\n    \"totalOrderAmount\": 200,\n    \"merchantNotifyURL\": \"http://10.154.10.46:3200/URL/TransactionListener2\",\n    \"merchantTransactionReference\": \"quis est ea enim inc\",\n    \"sourceTimestamp\": \"2016-03-25T12:00:00.000\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"language\": \"en\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/mpesa",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"mpesa"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"errorCode\": \"404-001\",\n \"errorType\": \"InvalidInput\",\n \"details\": {\n  \"description\": \"The requested url is not available.\",\n  \"message\": \"Resource Not Found\"\n }\n}"
+						},
+						{
+							"name": "Bad Request",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"customerIdentifier\": \"255754710119\",\n    \"merchantName\": \"CELLULANT LIPA BILL\",\n    \"merchantAccountNumber\": \"occ\",\n    \"merchantIdentifier\": \"API_PRNT_AVS\",\n    \"currencyCode\": \"TZS\",\n    \"totalOrderAmount\": 200,\n    \"merchantNotifyURL\": \"http://10.154.10.46:3200/URL/TransactionListener2\",\n    \"merchantTransactionReference\": \"quis est ea enim inc\",\n    \"sourceTimestamp\": \"2016-03-25T12:00:00.000\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"language\": \"en\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/mpesa",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"mpesa"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"errorCode\": \"400-01\",\n \"errorType\": \"InvalidInput\",\n \"details\": {\n  \"description\": \"Missing Required Parameters in request\",\n  \"message\": \"Request Validation Failure\"\n }\n}"
+						},
+						{
+							"name": "Unauthorized",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"description": "Added as a part of security scheme: oauth2",
+										"key": "Authorization",
+										"value": "<token>"
+									},
+									{
+										"description": "(Required) Describes the type of content in the request body. This value must always be set to application/json",
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"sourceTransactionId\": \"5e2a8437-9057-49f2-bbc9-1fc1104288e5\",\n    \"customerIdentifier\": \"255754710119\",\n    \"merchantName\": \"CELLULANT LIPA BILL\",\n    \"merchantAccountNumber\": \"occ\",\n    \"merchantIdentifier\": \"API_PRNT_AVS\",\n    \"currencyCode\": \"TZS\",\n    \"totalOrderAmount\": 200,\n    \"merchantNotifyURL\": \"http://10.154.10.46:3200/URL/TransactionListener2\",\n    \"merchantTransactionReference\": \"quis est ea enim inc\",\n    \"sourceTimestamp\": \"2016-03-25T12:00:00.000\",\n    \"productIdentifier\": \"Video Play Services\",\n    \"language\": \"en\"\n}"
+								},
+								"url": {
+									"raw": "{{baseUrl}}/:countryCode/mpesa",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										":countryCode",
+										"mpesa"
+									],
+									"variable": [
+										{
+											"key": "countryCode"
+										}
+									]
+								}
+							},
+							"status": "Unauthorized",
+							"code": 401,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"sourceTransactionId\": \"123e4567-e89b-42d3-a456-556642440000\",\n \"apiGatewayTransactionId\": \"xxxxxxxzatcrh.vodacom.corp-61992-3692433-1\",\n \"errorCode\": \"401-001\",\n \"errorType\": \"UnauthorizedAccess\",\n \"details\": {\n  \"description\": \"Oauth Access Token provided in the request is expired. Please request new token\",\n  \"message\": \"Expired Access Token\"\n }\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "OAuth Copy",
+			"item": [
+				{
+					"name": "Oauth-Generate Access Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"pm.globals.set(\"accesstoken\", jsonData.access_token); "
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "lDkob2MBrGhmRHEj",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "zaFvvGiGsm8fxoYBcSECpSUcsVeqWTpm",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://qaapix.vodacom.co.za/oauth-framework/generateaccesstoken",
+							"protocol": "https",
+							"host": [
+								"qaapix",
+								"vodacom",
+								"co",
+								"za"
+							],
+							"path": [
+								"oauth-framework",
+								"generateaccesstoken"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "oauth2"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://devapix.vodacom.co.za/v1/paymentsandbox",
+			"type": "string"
+		}
+	]
+}
