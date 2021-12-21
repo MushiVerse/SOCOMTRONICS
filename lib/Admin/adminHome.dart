@@ -35,8 +35,8 @@ class MyApp1 extends StatelessWidget {
 
 final Color purple = Color(0xFF52044E);
 final Color white = Color(0xFFF8F8F8);
-final Color greenl = Color(0xFF06A520);
-final Color greend = Color(0xFF046614);
+final Color greenl = Color(0xFF97E2A4);
+final Color greend = Color(0xFF2C362E);
 
 class UploadingImageToFirebaseStorage extends StatefulWidget {
   @override
@@ -80,16 +80,7 @@ class _UploadingImageToFirebaseStorageState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xFF52044E),
-        actions: [
-          IconButton(
-              icon: Icon(Icons.logout),
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, "/SignIn");
-              })
-        ],
-      ),
+      
       body: Stack(
         children: <Widget>[
           Container(
@@ -99,7 +90,7 @@ class _UploadingImageToFirebaseStorageState
                     bottomLeft: Radius.circular(50.0),
                     bottomRight: Radius.circular(50.0)),
                 gradient: LinearGradient(
-                    colors: [purple, white],
+                    colors: [greenl, white],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight)),
           ),

@@ -2,6 +2,8 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:socomtronics/Admin/HomeAdmn.dart';
+import 'package:socomtronics/Drawer%20Pages/SignIn/loginSucces.dart';
 import 'package:socomtronics/Drawer%20Pages/qrCode.dart';
 import 'package:socomtronics/MpesaPayment/checkout.dart';
 import 'package:socomtronics/Shared/profile.dart';
@@ -28,18 +30,20 @@ class MyApp extends StatelessWidget {
           '/SignUp': (BuildContext context) => SignUp(),
           '/Profile': (BuildContext context) => ProfileApp(),
           '/CheckOut':(context) => CheckOut(),
-          // '/': (BuildContext context) => QrCode(),
+          '/Success': (BuildContext context) => SuccessScreen(),
+          '/Admin': (BuildContext context) => HomeAdmin(),
+
           '/Tickets': (BuildContext context) => Tickets(),
           '/Qrcode': (BuildContext context) => QrCode(),
         },
       debugShowCheckedModeBanner: false,
-      title: 'MultiPurpose SMS',
+      title: 'SOCOMTronics',
       theme: ThemeData(
         brightness: Brightness.light,
         primaryColor: Colors.green[800],
         canvasColor: Colors.transparent
         ),
-      home: MyHomePage(title: 'MultiPurpose Stadium Management System'),
+      home: MyHomePage(title: 'SOCOM Tronics'),
     );
   }
 }

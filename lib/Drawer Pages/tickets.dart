@@ -65,21 +65,18 @@ class _TicketsState extends State<Tickets> {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-          // gradient: LinearGradient(
-          //     begin: Alignment.topLeft,
-          //     end: Alignment.bottomRight,
-          //     colors: [
-          //   Colors.white,
-          //   // Colors.green[800],
-          //   // Colors.purple
-          // ])
-          ),
-
+        // gradient: LinearGradient(
+        //     begin: Alignment.topLeft,
+        //     end: Alignment.bottomRight,
+        //     colors: [
+        //   Colors.white,
+        //   // Colors.green[800],
+        //   // Colors.purple
+        // ])
+      ),
       child: Scaffold(
         backgroundColor: Colors.transparent,
-        
         drawer: Drawer(
-          
           child: Column(
             children: [
               Container(
@@ -88,10 +85,9 @@ class _TicketsState extends State<Tickets> {
               ),
               ListTile(
                 onTap: () {
-                   Navigator.pushReplacementNamed(context, "/Home");
+                  Navigator.pushReplacementNamed(context, "/Home");
                   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home()) );
                 },
-                
                 title: Text(
                   "Home",
                   style: TextStyle(
@@ -100,14 +96,12 @@ class _TicketsState extends State<Tickets> {
                       fontWeight: FontWeight.bold),
                 ),
               ),
-             
               ListTile(
                 onTap: () {
-                   Navigator.pushReplacementNamed(context, "/SignIn");
+                  Navigator.pushReplacementNamed(context, "/SignIn");
                   // Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUp()) );
                 },
                 title: Text(
-                  
                   "Sign In",
                   style: TextStyle(
                       color: Colors.white,
@@ -117,116 +111,74 @@ class _TicketsState extends State<Tickets> {
               ),
             ],
           ),
-
         ),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
         ),
-       
         body: Center(
           child: Container(
             child: StreamBuilder<QuerySnapshot>(
-              stream:
-                  getTickets(),
-                 
+              stream: getTickets(),
               builder: (context, snapshot) {
-                try{
-
+                try {
                   if (snapshot.connectionState != ConnectionState.done) {
-                  print(uids);
-                  return ListView.builder(
-                      // shrinkWrap: true,
-                      itemCount: snapshot.data.docs.length,
-                      physics: BouncingScrollPhysics(),
-                      itemBuilder: (BuildContext context, int index) {
-                        String ticketId = snapshot.data.docs[index].id;
-                        final item = snapshot.data.docs[index]['eventId'];
+                    print(uids);
+                    return ListView.builder(
+                        // shrinkWrap: true,
+                        itemCount: snapshot.data.docs.length,
+                        physics: BouncingScrollPhysics(),
+                        itemBuilder: (BuildContext context, int index) {
+                          String ticketId = snapshot.data.docs[index].id;
+                          final item = snapshot.data.docs[index]['eventId'];
+                          String price = snapshot.data.docs[index]['price'];
 
-                        print(ticketId);
-                        print(item);
+                          print(ticketId);
+                          print(item);
 
-                        return ExpansionTile(
-                          
-                          title: Text(
-                            snapshot.data.docs[index]["eventId"],
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                          ),
-                          subtitle: Column(
-                            children: [
-                              Row(
+                          return Card(
+                            color: Colors.green[100],
+                                                      child: ListTile(
+                              title: Text(
+                                snapshot.data.docs[index]["eventId"],
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                              subtitle: Column(
                                 children: [
-                                  Text(
-                                    ticketId,
-                                    style: TextStyle(
-                                      color: Colors.grey[850],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  SizedBox(
-                                    width: 10,
+                                  Row(
+                                    children: [
+                                      Text(
+                                        price,
+                                        style: TextStyle(
+                                          color: Colors.grey[850],
+                                        ),
+                                      ),
+                                     
+                                    ],
                                   ),
                                 ],
                               ),
-                            ],
-                          ),
-                          // leading: Image.network(
-                          //     snapshot.data.docs[index]['imgURL']),
-                          trailing: IconButton(
-                              focusColor: Colors.orange,
-                              hoverColor: Colors.orange,
-                              splashColor: Colors.orangeAccent,
-                              color: Colors.black,
-                              icon: Icon(Icons.payment),
-                              onPressed: () async {
-                                navigateSoccaerContent(
-                                          snapshot.data.docs[index], context);
-                              }),
-                          children: [
-                            // Image.network(snapshot.data.docs[index]['imgURL']),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                Center(
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20.0)),
-                                      primary: Colors.orange,
-                                    ),
-                                    child: Text(
-                                      "Rate It",
-                                      style: TextStyle(
-                                          fontSize: 23,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                )
-                              ],
-                            )
-
-                            //  GeoPoint(snapshot.data.docs[index].data()['geoLoc']),
-                          ],
-                        );
-                      });
-                }
-
-                }catch(e){
-                   return Loading();
+                              // leading: Image.network(
+                              //     snapshot.data.docs[index]['imgURL']),
+                              trailing: IconButton(
+                                  focusColor: Colors.orange,
+                                  hoverColor: Colors.orange,
+                                  splashColor: Colors.orangeAccent,
+                                  color: Colors.black,
+                                  icon: Icon(Icons.payment),
+                                  onPressed: () async {
+                                    navigateSoccaerContent(
+                                        snapshot.data.docs[index], context);
+                                  }),
+                            ),
+                          );
+                        });
+                  }
+                } catch (e) {
+                  return Loading();
                 }
                 //  else {
-                 
+
                 // }
               },
             ),

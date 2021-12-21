@@ -8,6 +8,7 @@ import 'package:flutter_braintree/flutter_braintree.dart';
 import 'package:socomtronics/MpesaPayment/checkout.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:socomtronics/SignIn/signIn.dart';
+import 'dart:math';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_database/firebase_database.dart';
 
@@ -57,6 +58,39 @@ class _ShowConcertDetailsState extends State<ShowConcertDetails> {
   void initState() {
     super.initState();
     initDynamicLinks();
+  }
+
+  final FirebaseFirestore ff = FirebaseFirestore.instance;
+ 
+
+  Future<Map<String, dynamic>> saveTickets2(String ticket) async {
+    try {
+      final uids = auth.currentUser.uid.toString();
+      await ff.collection('tickets').add({
+        'ticket': ticket,
+      });
+
+
+    } catch (e) {
+    
+    }
+  }
+
+  Future<Map<String, dynamic>> saveTickets(
+      String eventId, String ticket, String price1) async {
+    try {
+      final uids = auth.currentUser.uid.toString();
+      await ff.collection('userTicketsId').doc(uids).collection('tickets').add({
+        'eventId': eventId,
+        'ticket': ticket,
+        'price': price1,
+        // 'userId':
+      });
+
+     
+    } catch (e) {
+     
+    }
   }
 
   Future<void> initDynamicLinks() async {
@@ -215,6 +249,17 @@ class _ShowConcertDetailsState extends State<ShowConcertDetails> {
 
                       try {
                   String uids = auth.currentUser.uid;
+                  String eventId = widget.poost.id;
+                                                                              // String ticket =
+                                                                              //     snapshot.data.docs[index].data()['name'];
+                                                                              String price = "Tsh 15,000";
+                                                                              // String img =
+                                                                              //     snapshot.data.docs[index].data()['imgURL'];
+
+                                                                              const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+                                                                              Random _rnd = Random();
+
+                                                                              String getRandomString(int length) => String.fromCharCodes(Iterable.generate(length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
 
                   showCupertinoDialog(
                           context: context,
@@ -225,43 +270,12 @@ class _ShowConcertDetailsState extends State<ShowConcertDetails> {
                                 CupertinoDialogAction(
                                   child: Column(
                                     children: [
+                                      
                                       Card(
-                                        color: Colors.green,
-                                        child: ExpansionTile(
-                                            title: Text(
-                                              "VIP A",
-                                              style: TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white),
-                                            ),
-                                            children: [
-                                              ElevatedButton(
-                                                child: Text("Buy"),
-                                                onPressed: () async {
-                                                  try {
-                                                    write();
-                                                    deeplink();
-                                                  } catch (e) {
-                                                    await launch(fallbackUrl,
-                                                        forceSafariVC: false);
-                                                  }
-                                                },
-                                              )
-                                            ],
-                                            trailing: Text(
-                                              "Tzs 30000",
-                                              style: TextStyle(
-                                                  fontSize: 22,
-                                                  color: Colors.white),
-                                            ),
-                                            leading: Icon(Icons.money)),
-                                      ),
-                                      Card(
-                                        color: Colors.blue,
+                                        color: Colors.black,
                                         child: ExpansionTile(
                                           title: Text(
-                                            "VIP B",
+                                            "Ticket",
                                             style: TextStyle(
                                                 fontSize: 30,
                                                 fontWeight: FontWeight.bold,
@@ -276,7 +290,7 @@ class _ShowConcertDetailsState extends State<ShowConcertDetails> {
                                                       collectDeviceData: true,
                                                       paypalRequest:
                                                           BraintreePayPalRequest(
-                                                              amount: '10.00',
+                                                              amount: '15000.00',
                                                               displayName:
                                                                   'Kazen'),
                                                       cardEnabled: true);
@@ -308,14 +322,18 @@ class _ShowConcertDetailsState extends State<ShowConcertDetails> {
                                                                     Center(
                                                                         child:
                                                                             Text(
-                                                                      "Ok",
+                                                                      "Get Your Ticket",
                                                                       style: TextStyle(
                                                                           fontSize:
                                                                               30),
                                                                     )),
                                                                   ],
                                                                 ),
-                                                                onPressed: () {
+                                                                onPressed: () async{
+
+                                                                  await saveTickets(eventId, getRandomString(10), price);
+
+                                                                                          await saveTickets2(getRandomString(10));
                                                                   Navigator.pop(
                                                                       context);
                                                                 },
@@ -381,48 +399,7 @@ class _ShowConcertDetailsState extends State<ShowConcertDetails> {
                                           ),
                                         ),
                                       ),
-                                      Card(
-                                        color: Colors.red,
-                                        child: ExpansionTile(
-                                          // onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context)=> CheckOut())),
-                                          title: Text(
-                                            "Normal Class",
-                                            style: TextStyle(
-                                                fontSize: 30,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.white),
-                                          ),
-                                          leading: Icon(Icons.money),
-                                          trailing: Text(
-                                            "Tzs 7000",
-                                            style: TextStyle(
-                                                fontSize: 22,
-                                                color: Colors.white),
-                                          ),
-
-                                          children: [
-                                            Row(
-                                              children: [
-                                                ElevatedButton(
-                                                    onPressed: () {
-                                                      read();
-                                                    },
-                                                    child: Text("pay")),
-                                                ElevatedButton(
-                                                    onPressed: () {
-                                                      update();
-                                                    },
-                                                    child: Text("update")),
-                                                ElevatedButton(
-                                                    onPressed: () {
-                                                      delete();
-                                                    },
-                                                    child: Text("delete")),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
+                                     
                                       SizedBox(
                                         height: 20,
                                       ),

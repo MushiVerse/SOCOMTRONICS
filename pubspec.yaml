@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.10.5 <3.0.0"
 
 dependencies:
   #firebase
@@ -47,10 +47,16 @@ dependencies:
   fluttertoast: 7.1.5
   wc_form_validators:
   qr_flutter: ^4.0.0
+  barcode_widget: ^2.0.1
+   # scan QR Code
+  flutter_barcode_scanner: ^2.0.0
+
+  # create QR Code
+
   image_picker: ^0.7.5+3
   extended_image: ^4.1.0
   # braintree: ^0.2.0
-  flutter_braintree: ^1.2.1
+  flutter_braintree: ^2.0.0+1
   get: 3.24.0
   http: ^0.13.0
   flutter:

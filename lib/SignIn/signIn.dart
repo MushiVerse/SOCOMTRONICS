@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:socomtronics/Admin/HomeAdmn.dart';
 import 'package:socomtronics/Admin/adminHome.dart';
 import 'package:socomtronics/Drawer%20Pages/qrCode.dart';
 import 'package:socomtronics/Shared/roundedButton.dart';
@@ -28,7 +29,7 @@ class _SignInState extends State<SignIn> {
          Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (BuildContext context) => MyApp1()));
+              builder: (BuildContext context) => HomeAdmin()));
       }else{
         Navigator.pushReplacement(
           context,
@@ -108,11 +109,15 @@ class _SignInState extends State<SignIn> {
     return ModalProgressHUD(
       inAsyncCall: showSpinner,
       child: SafeArea(
+        
         child: Container(
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("lib/Assets/pic3.jpg"), fit: BoxFit.cover)),
           child: Scaffold(
+            appBar: AppBar(
+              backgroundColor: Color(0xFF200231)
+            ),
             drawer: Drawer(
               child: Column(
                 children: [

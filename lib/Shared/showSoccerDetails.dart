@@ -37,6 +37,25 @@ class _ShowDetailsState extends State<ShowSoccerDetails> {
     return ff.collection("Events").get();
   }
 
+  Future<Map<String, dynamic>> saveTickets2(String ticket) async {
+    try {
+      final uids = auth.currentUser.uid.toString();
+      await ff.collection('tickets').add({
+        'ticket': ticket,
+      });
+
+      _state['hasError'] = false;
+      _state['message'] = "Order was added successfully.";
+
+      return _state;
+    } catch (e) {
+      _state['hasError'] = true;
+      _state['message'] = e.toString().split(']')[1];
+
+      return _state;
+    }
+  }
+
   Future<Map<String, dynamic>> saveTickets(
       String eventId, String ticket, String price1) async {
     try {
@@ -182,25 +201,23 @@ class _ShowDetailsState extends State<ShowSoccerDetails> {
             alignment: Alignment.bottomCenter,
             child: ElevatedButton(
                 onPressed: () {
-
-
                   try {
-                  String uids = auth.currentUser.uid;
+                    String uids = auth.currentUser.uid;
 
-                  showCupertinoDialog(
-                      context: context,
-                      builder: (context) {
-                        return CupertinoAlertDialog(
-                          title: Text('Choose Category'),
-                          actions: <Widget>[
-                            CupertinoDialogAction(
-                              child: Column(
-                                children: [
-                                  Card(
-                                    color: Colors.green,
-                                    child: ExpansionTile(
+                    showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            title: Text('Choose Category'),
+                            actions: <Widget>[
+                              CupertinoDialogAction(
+                                child: Column(
+                                  children: [
+                                    Card(
+                                      color: Colors.black,
+                                      child: ExpansionTile(
                                         title: Text(
-                                          "VIP A",
+                                          "Ticket",
                                           style: TextStyle(
                                               fontSize: 30,
                                               fontWeight: FontWeight.bold,
@@ -215,7 +232,7 @@ class _ShowDetailsState extends State<ShowSoccerDetails> {
                                                     collectDeviceData: true,
                                                     paypalRequest:
                                                         BraintreePayPalRequest(
-                                                            amount: '20.00',
+                                                            amount: '15000.00',
                                                             displayName:
                                                                 'Kazen'),
                                                     cardEnabled: true);
@@ -225,7 +242,6 @@ class _ShowDetailsState extends State<ShowSoccerDetails> {
                                                         req);
 
                                                 if (res != null) {
-
                                                   return showCupertinoDialog(
                                                       context: context,
                                                       builder: (context) {
@@ -236,33 +252,22 @@ class _ShowDetailsState extends State<ShowSoccerDetails> {
                                                                 AsyncSnapshot<
                                                                         QuerySnapshot>
                                                                     snapshot) {
-
-
-                                                                      try{
-                                                                         if (snapshot
-                                                                      .connectionState ==
-                                                                  ConnectionState
-                                                                      .done) {
-                                                                return ListView.builder(
-                                                                  itemCount: snapshot.data.docs.length,
-                                                                  itemBuilder:
-                                                                    (BuildContext
-                                                                            context,
-                                                                        index) {
+                                                              try {
+                                                                if (snapshot
+                                                                        .connectionState ==
+                                                                    ConnectionState
+                                                                        .done) {
                                                                   String
                                                                       eventId =
-                                                                      snapshot
-                                                                          .data
-                                                                          .docs[
-                                                                              index]
+                                                                      widget
+                                                                          .post
                                                                           .id;
                                                                   // String ticket =
                                                                   //     snapshot.data.docs[index].data()['name'];
                                                                   String price =
-                                                                      snapshot.data.docs[index].data()['price'];
+                                                                      "Tsh 15,000";
                                                                   // String img =
                                                                   //     snapshot.data.docs[index].data()['imgURL'];
-                                                                  
 
                                                                   const _chars =
                                                                       'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
@@ -276,8 +281,6 @@ class _ShowDetailsState extends State<ShowSoccerDetails> {
                                                                           length,
                                                                           (_) =>
                                                                               _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
-
-                                                                  
 
                                                                   return CupertinoAlertDialog(
                                                                     title: Text(
@@ -297,7 +300,7 @@ class _ShowDetailsState extends State<ShowSoccerDetails> {
                                                                             ),
                                                                             Center(
                                                                                 child: Text(
-                                                                              "Ok",
+                                                                              "Get Your Ticket",
                                                                               style: TextStyle(fontSize: 30),
                                                                             )),
                                                                           ],
@@ -311,7 +314,10 @@ class _ShowDetailsState extends State<ShowSoccerDetails> {
                                                                               print(ud);
 
                                                                               // Map<String, dynamic> o =
-                                                                              await saveTickets(eventId, getRandomString(10), price);
+                                                                              String random = getRandomString(10);
+                                                                              await saveTickets(eventId, random, price);
+
+                                                                              await saveTickets2(random);
 
                                                                               Fluttertoast.showToast(msg: "Ticket Bought", toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, backgroundColor: Colors.green, textColor: Colors.black, fontSize: 16.0);
                                                                             } catch (e) {
@@ -344,15 +350,12 @@ class _ShowDetailsState extends State<ShowSoccerDetails> {
                                                                       )
                                                                     ],
                                                                   );
-                                                                });
-                                                              } else {
+                                                                } else {
+                                                                  return Loading1();
+                                                                }
+                                                              } catch (e) {
                                                                 return Loading1();
                                                               }
-
-                                                                      }catch(e){
-                                                                      return Loading1();
-                                                                      }
-                                                             
                                                             });
                                                       });
 
@@ -360,92 +363,6 @@ class _ShowDetailsState extends State<ShowSoccerDetails> {
                                                       .description);
                                                   print(res.paymentMethodNonce
                                                       .nonce);
-
-                                                  // final http.Response responce =
-                                                  //     await http.post(Uri.tryParse(
-                                                  //         '$url?payment_method_nonce=${res.paymentMethodNonce.nonce}&device_data=${res.deviceData}'));
-
-                                                  // final payres =
-                                                  //     jsonDecode(responce.body);
-                                                  // if (payres['result'] ==
-                                                  //     'success') {
-                                                  //   return showCupertinoDialog(
-                                                  //       context: context,
-                                                  //       builder: (context) {
-                                                  //         return CupertinoAlertDialog(
-                                                  //           title: Text(
-                                                  //               'Successfully Paid'),
-                                                  //           actions: <Widget>[
-                                                  //             CupertinoDialogAction(
-                                                  //               child: Column(
-                                                  //                 children: [
-                                                  //                   SizedBox(
-                                                  //                     height:
-                                                  //                         20,
-                                                  //                   ),
-                                                  //                   Divider(),
-                                                  //                   SizedBox(
-                                                  //                     height:
-                                                  //                         20,
-                                                  //                   ),
-                                                  //                   Center(
-                                                  //                       child:
-                                                  //                           Text(
-                                                  //                     "Ok",
-                                                  //                     style: TextStyle(
-                                                  //                         fontSize:
-                                                  //                             30),
-                                                  //                   )),
-                                                  //                 ],
-                                                  //               ),
-                                                  //               onPressed: () {
-                                                  //                 Navigator.pop(
-                                                  //                     context);
-                                                  //               },
-                                                  //             )
-                                                  //           ],
-                                                  //         );
-                                                  //       });
-                                                  // }else{
-                                                  //   return showCupertinoDialog(
-                                                  //       context: context,
-                                                  //       builder: (context) {
-                                                  //         return CupertinoAlertDialog(
-                                                  //           title: Text(
-                                                  //               'Transaction Declied, please check your balance and try again!'),
-                                                  //           actions: <Widget>[
-                                                  //             CupertinoDialogAction(
-                                                  //               child: Column(
-                                                  //                 children: [
-                                                  //                   SizedBox(
-                                                  //                     height:
-                                                  //                         20,
-                                                  //                   ),
-                                                  //                   Divider(),
-                                                  //                   SizedBox(
-                                                  //                     height:
-                                                  //                         20,
-                                                  //                   ),
-                                                  //                   Center(
-                                                  //                       child:
-                                                  //                           Text(
-                                                  //                     "Ok",
-                                                  //                     style: TextStyle(
-                                                  //                         fontSize:
-                                                  //                             30),
-                                                  //                   )),
-                                                  //                 ],
-                                                  //               ),
-                                                  //               onPressed: () {
-                                                  //                 Navigator.pop(
-                                                  //                     context);
-                                                  //               },
-                                                  //             )
-                                                  //           ],
-                                                  //         );
-                                                  //       });
-
-                                                  // }
                                                 } else {
                                                   return showCupertinoDialog(
                                                       context: context,
@@ -486,119 +403,61 @@ class _ShowDetailsState extends State<ShowSoccerDetails> {
                                               },
                                               child: Text("Buy"))
                                         ],
+                                        leading: Icon(Icons.money),
                                         trailing: Text(
-                                          "Tzs 30000",
+                                          "Tzs 15000",
                                           style: TextStyle(
                                               fontSize: 22,
                                               color: Colors.white),
                                         ),
-                                        leading: Icon(Icons.money)),
-                                  ),
-                                  Card(
-                                    color: Colors.blue,
-                                    child: ExpansionTile(
-                                      title: Text(
-                                        "VIP B",
-                                        style: TextStyle(
-                                            fontSize: 30,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
-                                      children: [
-                                        ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          CheckOut()));
-                                            },
-                                            child: Text("Buy"))
-                                      ],
-                                      leading: Icon(Icons.money),
-                                      trailing: Text(
-                                        "Tzs 15000",
-                                        style: TextStyle(
-                                            fontSize: 22, color: Colors.white),
                                       ),
                                     ),
-                                  ),
-                                  Card(
-                                    color: Colors.red,
-                                    child: ExpansionTile(
-                                      // onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context)=> CheckOut())),
-                                      title: Text(
-                                        "Normal Class",
-                                        style: TextStyle(
-                                            fontSize: 30,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
-                                      leading: Icon(Icons.money),
-                                      trailing: Text(
-                                        "Tzs 7000",
-                                        style: TextStyle(
-                                            fontSize: 22, color: Colors.white),
-                                      ),
-
-                                      children: [
-                                        ElevatedButton(
-                                            onPressed: () {
-                                              Navigator.of(context).push(
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          CheckOut()));
-                                            },
-                                            child: Text("pay"))
-                                      ],
+                                    SizedBox(
+                                      height: 20,
                                     ),
-                                  ),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Divider(),
-                                  SizedBox(
-                                    height: 20,
-                                  ),
-                                  Center(
-                                      child: Text(
-                                    "Cancel",
-                                    style: TextStyle(fontSize: 30),
-                                  )),
-                                ],
+                                    Divider(),
+                                    SizedBox(
+                                      height: 20,
+                                    ),
+                                    Center(
+                                        child: Text(
+                                      "Cancel",
+                                      style: TextStyle(fontSize: 30),
+                                    )),
+                                  ],
+                                ),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  } catch (e) {
+                    showCupertinoDialog(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoAlertDialog(
+                            title:
+                                Text('Please login to purchase this ,Thanks!'),
+                            actions: <Widget>[
+                              CupertinoDialogAction(
+                                child: Text('Ok, Loging In'),
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (contex) => SignIn()));
+                                },
                               ),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            )
-                          ],
-                        );
-                      });
-                } catch (e) {
-                  showCupertinoDialog(
-                      context: context,
-                      builder: (context) {
-                        return CupertinoAlertDialog(
-                          title: Text('Please login to purchase this ,Thanks!'),
-                          actions: <Widget>[
-                            CupertinoDialogAction(
-                              child: Text('Ok, Loging In'),
-                              onPressed: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (contex) => SignIn()));
-                              },
-                            ),
-                            CupertinoDialogAction(
-                              child: Text('Cancel'),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            )
-                          ],
-                        );
-                      });
-                }
-
-                  
+                              CupertinoDialogAction(
+                                child: Text('Cancel'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              )
+                            ],
+                          );
+                        });
+                  }
                 },
                 child: Text(
                   "Buy Ticket",

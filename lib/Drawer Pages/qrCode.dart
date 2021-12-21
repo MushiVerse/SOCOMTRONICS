@@ -1,3 +1,4 @@
+import 'package:barcode_widget/barcode_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:socomtronics/SignIn/signUp.dart';
@@ -18,14 +19,14 @@ class _QrCodeState extends State<QrCode> {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        // color: Colors.green
-          gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [
-            Colors.green,
-            Colors.green[900],
-          ])
+        color: Colors.white,
+          // gradient: LinearGradient(
+          //     begin: Alignment.topLeft,
+          //     end: Alignment.bottomRight,
+          //     colors: [
+          //   Colors.white,
+          //   Colors.green[900],
+          // ])
           ),
       child: Scaffold(
         
@@ -86,7 +87,25 @@ class _QrCodeState extends State<QrCode> {
           ),
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: QrImage(
+            child: 
+            // BarcodeWidget(
+            //       barcode: Barcode.qrCode(),
+            //       color: Colors.green,
+                  
+            //       data: widget.post.data()["ticket"],
+            //       width: 400,
+            //       height: 400,
+            //     ),
+            
+            QrImage(
+              // embeddedImage: AssetImage('lib/Assets/logo2.jpg'),
+              errorCorrectionLevel: QrErrorCorrectLevel.L,
+              
+              embeddedImageStyle: QrEmbeddedImageStyle(
+                size: Size(80, 80),
+
+              ),
+              embeddedImageEmitsError: true,
                   data: widget.post.data()["ticket"],
  ),
           )
