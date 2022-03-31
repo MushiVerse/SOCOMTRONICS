@@ -15,9 +15,9 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-homepage: https://github.com/mushi2/SOCOMTRONICS.git
-repository: https://github.com/mushi2/SOCOMTRONICS.git
-issue_tracker: https://github.com/mushi2/SOCOMTRONICS.git/issues
+homepage: https://github.com/mushi2/socomtronicsApp.git
+repository: https://github.com/mushi2/socomtronicsApp.git
+issue_tracker: https://github.com/mushi2/socomtronicsApp.git/issues
 version: 1.0.0+1
 
 environment:
